@@ -1,4 +1,4 @@
-package com.example.projet_jee.model;
+package com.projet.model;
 
 public class Foret {
 }
