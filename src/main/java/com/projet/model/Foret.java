@@ -1,18 +1,15 @@
 package com.projet.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 
-@Entity
-public class Foret {
-    @Id
-    private Long id;
 
-    public void setId(Long id) {
-        this.id = id;
+public class Foret extends Tuile {
+    private int quantite_production;
+
+    public int getQuantite_production() {
+        return quantite_production;
     }
 
-    public Long getId() {
-        return id;
+    public void setQuantite_production(int quantite_production) {
+        this.quantite_production = quantite_production;
     }
 }

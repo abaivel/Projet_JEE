@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             version="3.0">
+    <persistence-unit name="project" transaction-type="RESOURCE_LOCAL">
+        <class>com.projet.model.Joueur</class>
+        <class>com.projet.model.Soldat</class>
+        <class>com.projet.model.Carte</class>
+        <class>com.projet.model.Tuile</class>
+        <class>com.projet.model.Montagne</class>
+        <class>com.projet.model.Foret</class>
+        <class>com.projet.model.Ville</class>
+
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/bdd_4XGame?useSSL=false&amp;serverTimezone=UTC&amp;createDatabaseIfNotExist=true"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value="cytech0001"/>
+            <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
+            <property name="eclipselink.logging.level" value="FINE"/>
+            <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
+            <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+            <property name="eclipselink.target-database" value="MySQL"/>
+        </properties>
+    </persistence-unit>
+</persistence>

@@ -1,18 +1,22 @@
 package com.projet.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+public class Ville extends Tuile {
+    private int points_defense;
+    private Joueur proprietaire;
 
-@Entity
-public class Ville {
-    @Id
-    private Long id;
-
-    public void setId(Long id) {
-        this.id = id;
+    public Joueur getProprietaire() {
+        return proprietaire;
     }
 
-    public Long getId() {
-        return id;
+    public void setProprietaire(Joueur proprietaire) {
+        this.proprietaire = proprietaire;
+    }
+
+    public int getPoints_defense() {
+        return points_defense;
+    }
+
+    public void setPoints_defense(int points_defense) {
+        this.points_defense = points_defense;
     }
 }

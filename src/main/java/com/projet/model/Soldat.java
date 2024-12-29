@@ -1,23 +1,19 @@
 package com.projet.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-
-@Entity
 public class Soldat {
-    @Id
-    private Long id;
     private int x;
     private int y;
     private int points_defence;
+    private Joueur proprietaire;
 
-    public void setId(Long id) {
-        this.id = id;
+    public Joueur getProprietaire() {
+        return proprietaire;
     }
 
-    public Long getId() {
-        return id;
+    public void setProprietaire(Joueur proprietaire) {
+        this.proprietaire = proprietaire;
     }
+
     public int getX() {
         return x;
     }

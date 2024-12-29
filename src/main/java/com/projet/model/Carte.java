@@ -1,18 +1,16 @@
 package com.projet.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 
-@Entity
+import java.util.List;
+
 public class Carte {
-    @Id
-    private Long id;
+    private List<Tuile> grille;
 
-    public void setId(Long id) {
-        this.id = id;
+    public List<Tuile> getGrille() {
+        return grille;
     }
 
-    public Long getId() {
-        return id;
+    public void setGrille(List<Tuile> grille) {
+        this.grille = grille;
     }
 }

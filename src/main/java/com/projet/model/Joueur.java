@@ -1,29 +1,36 @@
 package com.projet.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "joueur")
 public class Joueur {
     @Id
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idJoueur;
     private String login;
-    private int points_production;
-    @OneToMany(mappedBy = "joueur")
-    private Set<Soldat> unites;
-    @OneToMany(mappedBy = "joueur")
-    private Set<Ville> villes;
+    private String mdp;
 
-    public void setId(Long id) {
-        this.id = id;
+    public Joueur(String login, String mdp) {
+        super();
+        this.login = login;
+        this.mdp = mdp;
     }
 
-    public Long getId() {
-        return id;
+    public Joueur() {
+        super();
+    }
+
+    public void setIdJoueur(Long id) {
+        this.idJoueur = id;
+    }
+
+    public Long getIdJoueur() {
+        return idJoueur;
     }
     public String getLogin() {
         return login;
@@ -33,27 +40,11 @@ public class Joueur {
         this.login = login;
     }
 
-    public int getPoints_production() {
-        return points_production;
+    public String getMdp() {
+        return mdp;
     }
 
-    public void setPoints_production(int points_production) {
-        this.points_production = points_production;
-    }
-
-    public Set<Soldat> getUnites() {
-        return unites;
-    }
-
-    public void setUnites(Set<Soldat> unites) {
-        this.unites = unites;
-    }
-
-    public Set<Ville> getVilles() {
-        return villes;
-    }
-
-    public void setVilles(Set<Ville> villes) {
-        this.villes = villes;
+    public void setMdp(String mdp) {
+        this.mdp = mdp;
     }
 }
