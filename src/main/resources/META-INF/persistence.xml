@@ -3,12 +3,8 @@
              version="3.0">
     <persistence-unit name="project" transaction-type="RESOURCE_LOCAL">
         <class>com.projet.model.Joueur</class>
-        <class>com.projet.model.Soldat</class>
-        <class>com.projet.model.Carte</class>
-        <class>com.projet.model.Tuile</class>
-        <class>com.projet.model.Montagne</class>
-        <class>com.projet.model.Foret</class>
-        <class>com.projet.model.Ville</class>
+        <class>com.projet.model.Partie</class>
+        <class>com.projet.model.JoueurPartie</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

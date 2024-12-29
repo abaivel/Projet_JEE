@@ -10,6 +10,7 @@ public class PlayerService {
     public static boolean testLogin(String login, String password) {
         EntityManager em = PersistenceManager.getEntityManager();
         boolean result = false;
+        Joueur joueurconnecte = null;
         try {
             em.getTransaction().begin();
             String query = "select j from Joueur j where j.login = :login";
@@ -21,17 +22,21 @@ public class PlayerService {
                 newJoueur.setMdp(password);
                 em.persist(newJoueur);
                 em.getTransaction().commit();
+                joueurconnecte = newJoueur;
                 result = true;
             }else{
                 Joueur j = joueurs.get(0);
                 result = j.getMdp().equals(password);
+                joueurconnecte = j;
+            }
+            if (result){
+                PartieService.addJoueurToPartieActiveIfNotInPartie(joueurconnecte);
             }
         } catch (Exception e) {
             em.getTransaction().rollback();
             e.printStackTrace();
         } finally {
             em.close();
-            PersistenceManager.close();
         }
         return result;
     }
