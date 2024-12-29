@@ -1,9 +1,8 @@
-package com.projet.model;
+package com.projet.model.JPA;
 
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "partie")

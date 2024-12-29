@@ -1,8 +1,8 @@
 package com.projet.service;
 
-import com.projet.model.Joueur;
-import com.projet.model.JoueurPartie;
-import com.projet.model.Partie;
+import com.projet.model.JPA.Joueur;
+import com.projet.model.JPA.JoueurPartie;
+import com.projet.model.JPA.Partie;
 import com.projet.util.PersistenceManager;
 import jakarta.persistence.EntityManager;
 

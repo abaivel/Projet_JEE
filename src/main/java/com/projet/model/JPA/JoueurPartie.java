@@ -1,4 +1,4 @@
-package com.projet.model;
+package com.projet.model.JPA;
 
 import jakarta.persistence.*;
 
