@@ -22,7 +22,7 @@ public class PartieDto {
             xRandom = (int) (Math.random() * 10);
             yRandom = (int) (Math.random() * 10);
         }while (!carte.IsCaseEmpty(xRandom, yRandom));
-        carte.setTuile(0,0,new Soldat(0,0, 10, joueur));
+        carte.setTuile(xRandom,yRandom,new Soldat(xRandom,yRandom, 10, joueur));
     }
 
     public List<JoueurDto> getJoueurs(){

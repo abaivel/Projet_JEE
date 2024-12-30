@@ -1,5 +1,7 @@
 package com.projet.controller;
 
+import com.projet.model.Tuile.Tuile;
+import com.projet.service.CarteService;
 import com.projet.service.PlayerService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,6 +22,8 @@ public class LoginControllerServlet extends HttpServlet {
         }else{
             boolean res = PlayerService.testLogin(login, mdp);
             if(res){
+                Tuile[][] grille = CarteService.getCarte();
+                req.setAttribute("grille", grille);
                 this.getServletContext().getRequestDispatcher("/game.jsp").forward(req, resp);
             }else{
                 req.setAttribute("erreur",true);

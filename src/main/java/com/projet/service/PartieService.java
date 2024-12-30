@@ -78,6 +78,7 @@ public class PartieService {
         Partie partieActive = PartieService.getPartieActive();
         if (!PartieService.IsJoueurInPartie(partieActive, joueur)){
             PartieService.addJoueurToPartie(partieActive, joueur);
+            CarteService.addJoueur(joueur.getLogin());
         }
     }
 

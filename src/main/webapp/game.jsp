@@ -1,4 +1,4 @@
-<%--
+<%@ page import="com.projet.model.Tuile.*" %><%--
   Created by IntelliJ IDEA.
   User: CYTech Student
   Date: 24/12/2024
@@ -12,11 +12,24 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
+<%Tuile[][] grille = (Tuile[][]) request.getAttribute("grille");%>
 <table>
     <%for (int i=0;i<10;i++){%>
     <tr>
         <%for (int j=0;j<10;j++){%>
-            <td><div></div></td>
+            <td><div>
+            <%if (grille[i][j] != null){
+                if (grille[i][j] instanceof Montagne){ %>
+                    <img src="icons/Small/mountain.png">
+                <%}else if (grille[i][j] instanceof Ville){%>
+                    <img src="icons/Small/city.png">
+                <%}else if (grille[i][j] instanceof Foret){%>
+                    <img src="icons/Small/forest.png">
+                <%}else if (grille[i][j] instanceof Soldat){%>
+                    <img src="icons/Small/soldier.png">
+                <%}
+            }%>
+            </div></td>
         <%}%>
     </tr>
     <%}%>
