@@ -1,4 +1,5 @@
-<%@ page import="com.projet.model.Tuile.*" %><%--
+<%@ page import="com.projet.model.Tuile.*" %>
+<%@ page import="com.projet.model.JoueurDto" %><%--
   Created by IntelliJ IDEA.
   User: CYTech Student
   Date: 24/12/2024
@@ -12,7 +13,8 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
-<%Tuile[][] grille = (Tuile[][]) request.getAttribute("grille");%>
+<%Tuile[][] grille = (Tuile[][]) request.getAttribute("grille");
+    JoueurDto joueurConnecte = (JoueurDto) request.getAttribute("joueur");%>
 <table>
     <%for (int i=0;i<10;i++){%>
     <tr>
@@ -20,14 +22,21 @@
             <td><div>
             <%if (grille[i][j] != null){
                 if (grille[i][j] instanceof Montagne){ %>
-                    <img src="icons/Small/mountain.png">
+                    <img src="icons/Small/mountain.png" alt="montagne">
                 <%}else if (grille[i][j] instanceof Ville){%>
-                    <img src="icons/Small/city.png">
+                    <img src="icons/Small/city.png"  alt="ville">
                 <%}else if (grille[i][j] instanceof Foret){%>
-                    <img src="icons/Small/forest.png">
-                <%}else if (grille[i][j] instanceof Soldat){%>
-                    <img src="icons/Small/soldier.png">
-                <%}
+                    <img src="icons/Small/forest.png"  alt="foret">
+                <%}else if (grille[i][j] instanceof Soldat){
+                    if (((Soldat) grille[i][j]).getProprietaire() == null){%>
+                        <img style="border:3px solid grey" src="icons/Small/soldier.png"  alt="soldat indé">
+                    <%}
+                    else if (((Soldat) grille[i][j]).getProprietaire().getLogin().equals(joueurConnecte.getLogin())){%>
+                        <img style="border:3px solid green" src="icons/Small/soldier.png"  alt="soldat alié">
+                    <%}else{%>
+                        <img style="border:3px solid red" src="icons/Small/soldier.png"  alt="soldat ennemi">
+                    <%}
+                }
             }%>
             </div></td>
         <%}%>

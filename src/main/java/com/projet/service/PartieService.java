@@ -3,6 +3,7 @@ package com.projet.service;
 import com.projet.model.JPA.Joueur;
 import com.projet.model.JPA.JoueurPartie;
 import com.projet.model.JPA.Partie;
+import com.projet.model.JoueurDto;
 import com.projet.util.PersistenceManager;
 import jakarta.persistence.EntityManager;
 
@@ -74,12 +75,15 @@ public class PartieService {
         }
     }
 
-    public static void addJoueurToPartieActiveIfNotInPartie(Joueur joueur){
+    public static JoueurDto addJoueurToPartieActiveIfNotInPartie(Joueur joueur){
         Partie partieActive = PartieService.getPartieActive();
         if (!PartieService.IsJoueurInPartie(partieActive, joueur)){
             PartieService.addJoueurToPartie(partieActive, joueur);
-            CarteService.addJoueur(joueur.getLogin());
+            JoueurDto joueurDto = new JoueurDto(joueur.getLogin());
+            CarteService.addJoueur(joueurDto);
+            return joueurDto;
         }
+        return CarteService.getJoueur(joueur.getLogin());
     }
 
 }

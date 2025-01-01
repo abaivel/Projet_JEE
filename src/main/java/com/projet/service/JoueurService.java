@@ -1,16 +1,18 @@
 package com.projet.service;
 
 import com.projet.model.JPA.Joueur;
+import com.projet.model.JoueurDto;
 import com.projet.util.PersistenceManager;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
 
-public class PlayerService {
-    public static boolean testLogin(String login, String password) {
+public class JoueurService {
+    public static JoueurDto testLogin(String login, String password) {
         EntityManager em = PersistenceManager.getEntityManager();
         boolean result = false;
         Joueur joueurconnecte = null;
+        JoueurDto joueurdto = null;
         try {
             em.getTransaction().begin();
             String query = "select j from Joueur j where j.login = :login";
@@ -30,7 +32,7 @@ public class PlayerService {
                 joueurconnecte = j;
             }
             if (result){
-                PartieService.addJoueurToPartieActiveIfNotInPartie(joueurconnecte);
+                joueurdto = PartieService.addJoueurToPartieActiveIfNotInPartie(joueurconnecte);
             }
         } catch (Exception e) {
             em.getTransaction().rollback();
@@ -38,6 +40,6 @@ public class PlayerService {
         } finally {
             em.close();
         }
-        return result;
+        return joueurdto;
     }
 }

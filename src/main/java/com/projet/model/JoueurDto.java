@@ -66,4 +66,8 @@ public class JoueurDto {
     public void removeVille(Ville ville) {
         this.villes.remove(ville);
     }
+
+    public String getLogin() {
+        return login;
+    }
 }
