@@ -86,4 +86,18 @@ public class PartieService {
         return CarteService.getJoueur(joueur.getLogin());
     }
 
+    public static void generateNewPartieDto(){
+        EntityManager em = PersistenceManager.getEntityManager();
+        Partie partieActive = PartieService.getPartieActive();
+        if (partieActive != null){
+            String query = "select jp from JoueurPartie jp where jp.partie.idPartie=:idPartie";
+            List<JoueurPartie> joueurParties = em.createQuery(query, JoueurPartie.class).setParameter("idPartie", partieActive.getIdPartie()).getResultList();
+            for (JoueurPartie jp : joueurParties){
+                Joueur j = jp.getJoueur();
+                JoueurDto joueurDto = new JoueurDto(j.getLogin());
+                CarteService.addJoueur(joueurDto);
+            }
+        }
+    }
+
 }
