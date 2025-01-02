@@ -30,6 +30,11 @@ public class CarteService {
         return null;
     }
 
+    public static List<JoueurDto> getJoueurs(){
+        PartieDto p = PartieDto.getPartieDto();
+        return p.getJoueurs();
+    }
+
     public static JoueurDto getJoueurTour(){
         PartieDto p = PartieDto.getPartieDto();
         return p.getJoueurTour();

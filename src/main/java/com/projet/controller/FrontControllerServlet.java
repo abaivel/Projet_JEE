@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/game")
 public class FrontControllerServlet extends HttpServlet {
@@ -19,9 +20,11 @@ public class FrontControllerServlet extends HttpServlet {
         JoueurDto j = CarteService.getJoueur(login);
         JoueurDto joueurTour = CarteService.getJoueurTour();
         Tuile[][] grille = CarteService.getCarte();
+        List<JoueurDto> joueurs = CarteService.getJoueurs();
         req.setAttribute("joueur", j);
         req.setAttribute("joueurTour", joueurTour);
         req.setAttribute("grille", grille);
+        req.setAttribute("joueurs", joueurs);
 
         this.getServletContext().getRequestDispatcher("/game.jsp").forward(req, resp);
     }

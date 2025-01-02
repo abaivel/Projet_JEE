@@ -1,6 +1,10 @@
-td div, td div img{
+td div{
     width: 50px;
     height: 50px;
+}
+td div img{
+    width: 45px;
+    height: 45px;
 }
 
 table, td, th {

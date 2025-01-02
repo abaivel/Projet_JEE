@@ -8,6 +8,8 @@ import com.projet.util.PersistenceManager;
 import jakarta.persistence.EntityManager;
 
 import java.time.LocalDate;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 public class PartieService {
@@ -96,8 +98,22 @@ public class PartieService {
                 Joueur j = jp.getJoueur();
                 JoueurDto joueurDto = new JoueurDto(j.getLogin());
                 CarteService.addJoueur(joueurDto);
+                jp.setScore(0);
             }
         }
+    }
+
+    public static Dictionary<String, Integer> finirPartie(){
+        Dictionary<String, Integer> dicoScores = new Hashtable<String, Integer>();
+        EntityManager em = PersistenceManager.getEntityManager();
+        Partie partieActive = PartieService.getPartieActive();
+        partieActive.setDateFin(LocalDate.now());
+        String query = "select jp from JoueurPartie jp where jp.partie.idPartie=:idPartie";
+        List<JoueurPartie> joueurParties = em.createQuery(query, JoueurPartie.class).setParameter("idPartie", partieActive.getIdPartie()).getResultList();
+        for (JoueurPartie jp : joueurParties){
+            dicoScores.put(jp.getJoueur().getLogin(),jp.getScore());
+        }
+        return dicoScores;
     }
 
 }
