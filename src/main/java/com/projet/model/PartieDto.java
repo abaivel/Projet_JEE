@@ -9,12 +9,16 @@ public class PartieDto {
     private Carte carte;
     private static PartieDto partieDto;
     private List<JoueurDto> joueurs;
+    private JoueurDto joueurTour;
 
     public PartieDto() {
         joueurs = new ArrayList<JoueurDto>();
     }
 
     public void addJoueur(JoueurDto joueur){
+        if (joueurs.isEmpty()) {
+            joueurTour = joueur;
+        }
         joueurs.add(joueur);
         int xRandom = 0;
         int yRandom = 0;
@@ -43,5 +47,31 @@ public class PartieDto {
 
     public void nouvellePartieDto(){
         partieDto = null;
+    }
+
+    public JoueurDto tourSuivant(){
+        if (!joueurs.isEmpty()) {
+            if (joueurTour == null) {
+                return joueurs.get(0);
+            }
+            int indexTour = joueurs.indexOf(this.joueurTour);
+            if (indexTour<joueurs.size() - 1) {
+                indexTour++;
+            }else{
+                indexTour = 0;
+            }
+            joueurTour = joueurs.get(indexTour);
+            return joueurTour;
+        }else{
+            return null;
+        }
+    }
+
+    public JoueurDto getJoueurTour() {
+        return joueurTour;
+    }
+
+    public void setJoueurTour(JoueurDto joueurTour) {
+        this.joueurTour = joueurTour;
     }
 }

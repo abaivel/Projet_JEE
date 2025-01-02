@@ -14,7 +14,8 @@
 </head>
 <body>
 <%Tuile[][] grille = (Tuile[][]) request.getAttribute("grille");
-    JoueurDto joueurConnecte = (JoueurDto) request.getAttribute("joueur");%>
+    JoueurDto joueurConnecte = (JoueurDto) request.getAttribute("joueur");
+    JoueurDto joueurTour = (JoueurDto) request.getAttribute("joueurTour");%>
 <table>
     <%for (int i=0;i<10;i++){%>
     <tr>
@@ -32,7 +33,7 @@
                         <img style="border:3px solid grey" src="icons/Small/soldier.png"  alt="soldat indé">
                     <%}
                     else if (((Soldat) grille[i][j]).getProprietaire().getLogin().equals(joueurConnecte.getLogin())){%>
-                        <img style="border:3px solid green" src="icons/Small/soldier.png"  alt="soldat alié">
+                        <img class="img-soldat-alie" style="border:3px solid green" src="icons/Small/soldier.png"  alt="soldat alié" onclick="clicSoldat(this, <%=grille[i][j].getX()%>, <%=grille[i][j].getY()%>)">
                     <%}else{%>
                         <img style="border:3px solid red" src="icons/Small/soldier.png"  alt="soldat ennemi">
                     <%}
@@ -44,16 +45,114 @@
     <%}%>
 </table>
 <div class="buttons-actions">
-    <div class="div-buttons-deplacements">
-        <button class="button-deplacement button-deplacement-haut"><img src="icons/fleche_haut.png"></button>
-        <button class="button-deplacement button-deplacement-gauche"><img src="icons/fleche_gauche.png"></button>
-        <button class="button-deplacement button-deplacement-droite"><img src="icons/fleche_droite.png"></button>
-        <button class="button-deplacement button-deplacement-bas"><img src="icons/fleche_bas.png"></button>
-    </div>
-    <div class="div-others-buttons">
-        <button class="other-button">Se soigner</button>
-        <button class="other-button">Fourrager</button>
-    </div>
+    <%if (joueurTour.getLogin().equals(joueurConnecte.getLogin())){%>
+        <div class="div-buttons-deplacements">
+            <button onclick="allerHaut('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-haut"><img src="icons/fleche_haut.png"></button>
+            <button onclick="allerGauche('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-gauche"><img src="icons/fleche_gauche.png"></button>
+            <button onclick="allerDroite('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-droite"><img src="icons/fleche_droite.png"></button>
+            <button onclick="allerBas('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-bas"><img src="icons/fleche_bas.png"></button>
+        </div>
+        <div class="div-others-buttons">
+            <button class="other-button">Se soigner</button>
+            <button class="other-button">Fourrager</button>
+        </div>
+        <p>C'est votre tour</p>
+    <%}else{%>
+        <div class="div-buttons-deplacements">
+            <button disabled onclick="allerHaut('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-haut"><img src="icons/fleche_haut.png"></button>
+            <button disabled onclick="allerGauche('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-gauche"><img src="icons/fleche_gauche.png"></button>
+            <button disabled onclick="allerDroite('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-droite"><img src="icons/fleche_droite.png"></button>
+            <button disabled onclick="allerBas('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-bas"><img src="icons/fleche_bas.png"></button>
+        </div>
+        <div class="div-others-buttons">
+            <button disabled class="other-button">Se soigner</button>
+            <button disabled class="other-button">Fourrager</button>
+        </div>
+        <p>C'est le tour de <%=joueurTour.getLogin()%></p>
+    <%}%>
 </div>
+<script>
+    var img_selectionne_x = 0
+    var img_selectionne_y = 0
+    function clicSoldat(image, x, y){
+        var soldats = document.getElementsByClassName("img-soldat-alie")
+        for (var i=0;i<soldats.length;i++){
+            var t = soldats[i]
+            t.style.borderColor="green"
+        }
+        image.style.borderColor="blue"
+        img_selectionne_x = x
+        img_selectionne_y = y
+    }
+    function allerGauche(login) {
+        const data = new URLSearchParams({
+            x_old: img_selectionne_x,
+            y_old: img_selectionne_y,
+            x_new: img_selectionne_x,
+            y_new: img_selectionne_y-1,
+            login: login
+        });
+        callMoveServlet(data)
+    }
+    function allerDroite(login) {
+        const data = new URLSearchParams({
+            x_old: img_selectionne_x,
+            y_old: img_selectionne_y,
+            x_new: img_selectionne_x,
+            y_new: img_selectionne_y+1,
+            login: login
+        });
+        callMoveServlet(data)
+    }
+    function allerHaut(login) {
+        const data = new URLSearchParams({
+            x_old: img_selectionne_x,
+            y_old: img_selectionne_y,
+            x_new: img_selectionne_x-1,
+            y_new: img_selectionne_y,
+            login: login
+        });
+        callMoveServlet(data)
+    }
+    function allerBas(login) {
+        const data = new URLSearchParams({
+            x_old: img_selectionne_x,
+            y_old: img_selectionne_y,
+            x_new: img_selectionne_x+1,
+            y_new: img_selectionne_y,
+            login: login
+        });
+        callMoveServlet(data)
+    }
+    function callMoveServlet(data){
+        const apiUrl = '${pageContext.request.contextPath}/move';
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: data.toString(),
+        };
+
+        fetch(apiUrl, requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                    //afficher une erreur sur la page
+                }else {
+                    location.reload();
+                }
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
+    }
+    function pollServer() {
+        location.reload()
+    }
+    // Polling chaque 5 secondes
+    setInterval(pollServer, 5000);
+
+</script>
 </body>
 </html>

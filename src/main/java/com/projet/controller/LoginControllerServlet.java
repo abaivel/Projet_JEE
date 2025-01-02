@@ -23,10 +23,8 @@ public class LoginControllerServlet extends HttpServlet {
         }else{
             JoueurDto res = JoueurService.testLogin(login, mdp);
             if(res!=null){
-                Tuile[][] grille = CarteService.getCarte();
                 req.setAttribute("joueur", res);
-                req.setAttribute("grille", grille);
-                this.getServletContext().getRequestDispatcher("/game.jsp").forward(req, resp);
+                this.getServletContext().getRequestDispatcher("/accueil.jsp").forward(req, resp);
             }else{
                 req.setAttribute("erreur",true);
                 this.getServletContext().getRequestDispatcher("/login.jsp").forward(req, resp);
