@@ -1,10 +1,10 @@
 package com.projet.service;
 
 import com.projet.model.Carte;
-import com.projet.model.JPA.Joueur;
 import com.projet.model.JoueurDto;
 import com.projet.model.PartieDto;
-import com.projet.model.Tuile.Tuile;
+import com.projet.model.Element.Element;
+import com.projet.model.Tuile;
 
 import java.util.List;
 
@@ -40,17 +40,18 @@ public class CarteService {
         return p.getJoueurTour();
     }
 
-    public static JoueurDto moveTuile(int oldX, int oldY, int newX, int newY){
+    public static JoueurDto moveTuile(int oldX, int oldY, int newX, int newY, String login){
         PartieDto p = PartieDto.getPartieDto();
         Carte c = p.getCarte();
-        if (newX>=0 && newY>=0 && newX<10 && newY<10 && c.getTuile(newX, newY) == null) {
+        if (newX>=0 && newY>=0 && newX<10 && newY<10 && c.IsTuileOccupable(newX, newY, login)) {
             Tuile t = c.getTuile(oldX, oldY);
             t.setX(newX);
             t.setY(newY);
-            c.setTuile(newX, newY, t);
-            c.setTuile(oldX, oldY, null);
-            JoueurDto jTour = p.tourSuivant();
-            return jTour;
+            t.getSoldat().setX(newX);
+            t.getSoldat().setY(newY);
+            c.setTuileSoldat(newX, newY, t.getSoldat());
+            c.setTuileSoldat(oldX, oldY, null);
+            return p.tourSuivant();
         }
         return null;
     }
