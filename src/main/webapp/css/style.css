@@ -5,6 +5,7 @@ td div{
 td div img{
     width: 45px;
     height: 45px;
+    position: absolute;
 }
 
 table, td, th {

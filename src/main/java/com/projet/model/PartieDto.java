@@ -1,12 +1,10 @@
 package com.projet.model;
 
-import com.projet.model.Tuile.Soldat;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class PartieDto {
-    private Carte carte;
+    private Carte carte = new Carte();
     private static PartieDto partieDto;
     private List<JoueurDto> joueurs;
     private JoueurDto joueurTour;
@@ -25,8 +23,8 @@ public class PartieDto {
         do {
             xRandom = (int) (Math.random() * 10);
             yRandom = (int) (Math.random() * 10);
-        }while (!carte.IsCaseEmpty(xRandom, yRandom));
-        carte.setTuile(xRandom,yRandom,new Soldat(xRandom,yRandom, 10, joueur));
+        }while (!carte.IsTuileOccupable(xRandom, yRandom, joueur.getLogin()));
+        carte.setTuileSoldat(xRandom,yRandom,new Soldat(xRandom,yRandom, 10, joueur));
     }
 
     public List<JoueurDto> getJoueurs(){
