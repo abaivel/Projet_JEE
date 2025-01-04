@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 public class PartieService {
     public static Partie getPartieActive(){
@@ -103,8 +104,8 @@ public class PartieService {
         }
     }
 
-    public static Dictionary<String, Integer> finirPartie(){
-        Dictionary<String, Integer> dicoScores = new Hashtable<String, Integer>();
+    public static Map<String, Integer> finirPartie(){
+        Map<String, Integer> dicoScores = new Hashtable<String, Integer>();
         EntityManager em = PersistenceManager.getEntityManager();
         Partie partieActive = PartieService.getPartieActive();
         partieActive.setDateFin(LocalDate.now());

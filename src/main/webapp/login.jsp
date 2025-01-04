@@ -10,7 +10,7 @@
         <h1 style="text-align: center;margin: 0 0 20px 0;">Bienvenue sur ce jeu</h1>
         <div style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;border-radius: 15px; background-color: white; width: 30%; margin: auto; padding: 1%;">
             <h3 style="text-align: center;margin:0">Inscription/Connexion</h3>
-            <form action="${pageContext.request.contextPath}/login" method="post">
+            <form action="${pageContext.request.contextPath}/accueil" method="post">
                 <label for="login" style="font-size: 15px;">Login</label>
                 <br>
                 <input type="text" id="login" name="login" required style="width: 97%;border-radius: 15px;height: 20px;padding: 2px 5px;font-size: 15px;border-color: #000000;font-family: 'Times New Roman',serif;">

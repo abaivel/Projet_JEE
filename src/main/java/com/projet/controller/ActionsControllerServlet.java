@@ -8,24 +8,29 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/move")
 public class ActionsControllerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        JoueurDto j = CarteService.getJoueur(req.getParameter("login"));
+        HttpSession session = req.getSession();
+        JoueurDto joueurConnecte = (JoueurDto) session.getAttribute("joueurConnecte");
         int xOld = Integer.parseInt(req.getParameter("x_old"));
         int yOld = Integer.parseInt(req.getParameter("y_old"));
         int xNew = Integer.parseInt(req.getParameter("x_new"));
         int yNew = Integer.parseInt(req.getParameter("y_new"));
         JoueurDto res = CarteService.moveTuile(xOld, yOld , xNew, yNew);
+        List<JoueurDto> joueurs = CarteService.getJoueurs();
         if (res !=null) {
             Tuile[][] grille = CarteService.getCarte();
-            req.setAttribute("joueur", j);
+            req.setAttribute("joueur", joueurConnecte);
             req.setAttribute("joueurTour", res);
             req.setAttribute("grille", grille);
+            req.setAttribute("joueurs", joueurs);
             resp.setStatus(200);
         }else{
             resp.setStatus(400);

@@ -19,6 +19,7 @@
     JoueurDto joueurTour = (JoueurDto) request.getAttribute("joueurTour");
     List<JoueurDto> joueurs = (List<JoueurDto>) request.getAttribute("joueurs");
 %>
+<button type="button" name="back" onclick="history.back()">Retour</button>
 <div style="display: flex;gap: 5%;">
     <div>
         <table>
@@ -29,8 +30,14 @@
                     <%if (grille[i][j] != null){
                         if (grille[i][j] instanceof Montagne){ %>
                             <img src="icons/Small/mountain.png" alt="montagne">
-                        <%}else if (grille[i][j] instanceof Ville){%>
-                            <img src="icons/Small/city.png"  alt="ville">
+                        <%}else if (grille[i][j] instanceof Ville){
+                            if (((Ville) grille[i][j]).getProprietaire() == null){%>
+                                <img style="border:3px solid grey" src="icons/Small/city.png"  alt="ville indé">
+                            <%}else if (((Ville) grille[i][j]).getProprietaire().getLogin().equals(joueurConnecte.getLogin())){%>
+                                <img class="img-soldat-alie" style="border:3px solid green" src="icons/Small/city.png"  alt="ville alié">
+                            <%}else{%>
+                                <img style="border:3px solid red" src="icons/Small/city.png"  alt="ville ennemi">
+                            <%}%>
                         <%}else if (grille[i][j] instanceof Foret){%>
                             <img src="icons/Small/forest.png"  alt="foret">
                         <%}else if (grille[i][j] instanceof Soldat){
@@ -38,7 +45,8 @@
                                 <img style="border:3px solid grey" src="icons/Small/soldier.png"  alt="soldat indé">
                             <%}
                             else if (((Soldat) grille[i][j]).getProprietaire().getLogin().equals(joueurConnecte.getLogin())){%>
-                                <img class="img-soldat-alie" style="border:3px solid green" src="icons/Small/soldier.png"  alt="soldat alié" onclick="clicSoldat(this, <%=grille[i][j].getX()%>, <%=grille[i][j].getY()%>)">
+
+                        <img class="img-soldat-alie" style="border:3px solid green" src="icons/Small/soldier.png"  alt="soldat alié" onclick="clicSoldat(this, <%=grille[i][j].getX()%>, <%=grille[i][j].getY()%>)">
                             <%}else{%>
                                 <img style="border:3px solid red" src="icons/Small/soldier.png"  alt="soldat ennemi">
                             <%}
@@ -61,6 +69,7 @@
                     <button class="other-button">Se soigner</button>
                     <button class="other-button">Fourrager</button>
                 </div>
+                <p style="margin: 0 0 0 10px;" id="nb-points-defense"></p>
             <%}else{%>
                 <div class="div-buttons-deplacements">
                     <button disabled onclick="allerHaut('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-haut"><img src="icons/fleche_haut.png"></button>
@@ -89,7 +98,14 @@
         <%}%>
         <p>Score : <%=joueurConnecte.getScore()%></p>
         <p>Points de production : <%=joueurConnecte.getPoints_production()%></p>
-        <form method="post" action="/finPartie">
+        <form>
+            <%if (joueurConnecte.getPoints_production()>=15){%>
+            <input type="submit" value="Recruter un soldat : 15 points de production">
+            <%}else{%>
+            <input disabled type="submit" value="Recruter un soldat : 15 points de production">
+            <%}%>
+        </form>
+        <form method="post" action="${pageContext.request.contextPath}/finPartie">
             <input type="submit" value="Finir la partie">
         </form>
     </div>
@@ -97,6 +113,13 @@
 <script>
     var img_selectionne_x = 0
     var img_selectionne_y = 0
+    var grille = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]]
+    <%for (int i=0;i<10;i++){%>
+        <%for (int j=0;j<10;j++){
+        if (grille[i][j] instanceof Soldat){%>
+            grille[<%=i%>][<%=j%>] = <%=((Soldat)grille[i][j]).getPoints_defence()%>
+        <%}}
+    }%>
     function clicSoldat(image, x, y){
         var soldats = document.getElementsByClassName("img-soldat-alie")
         for (var i=0;i<soldats.length;i++){
@@ -106,6 +129,8 @@
         image.style.borderColor="blue"
         img_selectionne_x = x
         img_selectionne_y = y
+        var text_points_defense = document.getElementById("nb-points-defense")
+        text_points_defense.innerHTML = "Points de défense : " + grille[parseInt(x)][parseInt(y)].toString()
     }
     function allerGauche(login) {
         const data = new URLSearchParams({

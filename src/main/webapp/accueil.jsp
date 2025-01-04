@@ -13,7 +13,7 @@
     <div style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;border-radius: 15px; background-color: white; width: 20%; margin: auto; padding: 1%;">
         <h2 style="text-align: center;margin: 0 0 3%;">Bienvenue <%=j.getLogin()%></h2>
         <div style="display: flex;justify-content: space-evenly;">
-        <a style="width: 40%;" href="${pageContext.request.contextPath}/game?login=<%=j.getLogin()%>"><button style="width: 100%;font-size: 15px;border-radius: 15px;padding: 2px;background-color: #ffffff;border-color: #000000;font-family: 'Times New Roman',serif;">Partie</button></a>
+        <a style="width: 40%;" href="${pageContext.request.contextPath}/game"><button style="width: 100%;font-size: 15px;border-radius: 15px;padding: 2px;background-color: #ffffff;border-color: #000000;font-family: 'Times New Roman',serif;">Partie</button></a>
 
         <a style="width: 40%;"><button style="width: 100%;font-size: 15px;border-radius: 15px;padding: 2px;background-color: #ffffff;border-color: #000000;font-family: 'Times New Roman',serif;">Recap des scores</button></a>
         </div>
