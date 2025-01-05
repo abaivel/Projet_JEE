@@ -1,6 +1,7 @@
 package com.projet.service;
 
 import com.projet.model.Carte;
+import com.projet.model.Element.Ville;
 import com.projet.model.JoueurDto;
 import com.projet.model.PartieDto;
 import com.projet.model.Element.Element;
@@ -40,7 +41,7 @@ public class CarteService {
         return p.getJoueurTour();
     }
 
-    public static JoueurDto moveTuile(int oldX, int oldY, int newX, int newY, String login){
+    public static Tuile moveTuile(int oldX, int oldY, int newX, int newY, String login){
         PartieDto p = PartieDto.getPartieDto();
         Carte c = p.getCarte();
         if (newX>=0 && newY>=0 && newX<10 && newY<10 && c.IsTuileOccupable(newX, newY, login)) {
@@ -51,9 +52,45 @@ public class CarteService {
             t.getSoldat().setY(newY);
             c.setTuileSoldat(newX, newY, t.getSoldat());
             c.setTuileSoldat(oldX, oldY, null);
-            return p.tourSuivant();
+            Tuile s = c.IsNextToSoldat(newX,newY,login);
+            if (s!=null){
+                return s;
+            }
+            Tuile v = c.IsNextToVille(newX, newY,login);
+            if (v!=null){
+                return v;
+            }
         }
         return null;
+    }
+
+    public static JoueurDto tourSuivant(){
+        PartieDto p = PartieDto.getPartieDto();
+        return p.tourSuivant();
+    }
+
+    public static Tuile getTuile(int x, int y){
+        PartieDto p = PartieDto.getPartieDto();
+        return p.getCarte().getTuile(x, y);
+    }
+
+    public static void generateNewPartie(){
+        PartieDto p = PartieDto.getPartieDto();
+        p.getCarte().setGrilleAleatoire();
+    }
+
+    public static void endCombat(Tuile tuileAttaque, Tuile tuileSoldat, int pointsAttaque, int pointsSoldat, JoueurDto joueur){
+        tuileSoldat.getSoldat().setPoints_defence(pointsSoldat);
+        if (tuileSoldat.getSoldat().getPoints_defence() <=0){
+            tuileSoldat.setSoldat(null);
+        }
+        if (tuileAttaque.getElement() instanceof Ville) {
+            ((Ville) tuileAttaque.getElement()).setPoints_defense(pointsAttaque);
+            if (((Ville) tuileAttaque.getElement()).getPoints_defense()<=0){
+                ((Ville) tuileAttaque.getElement()).setProprietaire(joueur);
+            }
+        }
+
     }
 
     public static JoueurDto soignerSoldat(int x, int y, String login){

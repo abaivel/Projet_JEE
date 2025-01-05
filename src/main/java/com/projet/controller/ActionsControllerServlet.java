@@ -24,18 +24,25 @@ public class ActionsControllerServlet extends HttpServlet {
         int yOld = Integer.parseInt(req.getParameter("y_old"));
         int xNew = Integer.parseInt(req.getParameter("x_new"));
         int yNew = Integer.parseInt(req.getParameter("y_new"));
-        JoueurDto res = CarteService.moveTuile(xOld, yOld , xNew, yNew, joueurConnecte.getLogin());
-        List<JoueurDto> joueurs = CarteService.getJoueurs();
-        if (res !=null) {
+        Tuile res = CarteService.moveTuile(xOld, yOld , xNew, yNew, joueurConnecte.getLogin());
+        if (res!=null){
+            req.setAttribute("joueur", joueurConnecte);
+            req.setAttribute("TuileAttaque", res);
+            resp.setStatus(301);
+            resp.getWriter().write("{\"redirect\": \"combat?xTuile="+res.getX()+"&yTuile="+res.getY()+"&xSoldat="+xNew+"&ySoldat="+yNew+"\"}");
+            //this.getServletContext().getRequestDispatcher("/combat.jsp").forward(req, resp);
+        }else {
+            JoueurDto joueurTour = CarteService.tourSuivant();
+            List<JoueurDto> joueurs = CarteService.getJoueurs();
             Tuile[][] grille = CarteService.getCarte();
             req.setAttribute("joueur", joueurConnecte);
-            req.setAttribute("joueurTour", res);
+            req.setAttribute("joueurTour", joueurTour);
             req.setAttribute("grille", grille);
             req.setAttribute("joueurs", joueurs);
             resp.setStatus(200);
-        }else{
-            resp.setStatus(400);
+            //resp.getWriter().write("{\"redirect\": \"game.jsp\"}");
+
+            this.getServletContext().getRequestDispatcher("/game.jsp").forward(req, resp);
         }
-        this.getServletContext().getRequestDispatcher("/game.jsp").forward(req, resp);
     }
 }

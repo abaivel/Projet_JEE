@@ -28,6 +28,7 @@ public class PartieService {
                 em.persist(newPartie);
                 em.getTransaction().commit();
                 partie = newPartie;
+                CarteService.generateNewPartie();
             }else {
                 partie = parties.get(0);
             }

@@ -190,11 +190,19 @@
 
         fetch(apiUrl, requestOptions)
             .then(response => {
-                if (!response.ok) {
+                if (response.status === 301){
+                    return response.json();
+                }else if (!response.ok) {
                     throw new Error('Network response was not ok');
                     //afficher une erreur sur la page
-                }else {
+                }
+                else{
                     location.reload();
+                }
+            })
+            .then(data => {
+                if (data.redirect) {
+                    window.location.href = data.redirect; // Redirection vers l'URL renvoyée
                 }
             })
             .catch(err => {
@@ -202,10 +210,12 @@
             });
     }
     function pollServer() {
-        location.reload()
+        <%if (!joueurTour.getLogin().equals(joueurConnecte.getLogin())){%>
+            location.reload()
+        <%}%>
     }
     // Polling chaque 5 secondes
-    //setInterval(pollServer, 5000);
+    setInterval(pollServer, 5000);
 
     function seSoigner(login){
         const data = new URLSearchParams({
