@@ -1,7 +1,6 @@
 package com.projet.model;
 
-import com.projet.model.Tuile.Soldat;
-import com.projet.model.Tuile.Ville;
+import com.projet.model.Element.Ville;
 
 import java.util.ArrayList;
 import java.util.List;

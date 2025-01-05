@@ -1,15 +1,15 @@
-package com.projet.model.Tuile;
+package com.projet.model.Element;
 
-public class Tuile {
+public class Element {
     private int x;
     private int y;
 
-    public Tuile(int x, int y) {
+    public Element(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public Tuile() {
+    public Element() {
     }
 
     public int getX() {

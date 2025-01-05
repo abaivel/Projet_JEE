@@ -1,6 +1,8 @@
-<%@ page import="com.projet.model.Tuile.*" %>
+<%@ page import="com.projet.model.Element.*" %>
 <%@ page import="com.projet.model.JoueurDto" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="com.projet.model.Soldat" %>
+<%@ page import="com.projet.model.Tuile" %><%--
   Created by IntelliJ IDEA.
   User: CYTech Student
   Date: 24/12/2024
@@ -14,7 +16,8 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
-<%Tuile[][] grille = (Tuile[][]) request.getAttribute("grille");
+<%
+    Tuile[][] grille = (Tuile[][]) request.getAttribute("grille");
     JoueurDto joueurConnecte = (JoueurDto) request.getAttribute("joueur");
     JoueurDto joueurTour = (JoueurDto) request.getAttribute("joueurTour");
     List<JoueurDto> joueurs = (List<JoueurDto>) request.getAttribute("joueurs");
@@ -27,31 +30,31 @@
             <tr>
                 <%for (int j=0;j<10;j++){%>
                     <td><div>
-                    <%if (grille[i][j] != null){
-                        if (grille[i][j] instanceof Montagne){ %>
+                    <%if (grille[i][j].getElement() != null){
+                        if (grille[i][j].getElement() instanceof Montagne){ %>
                             <img src="icons/Small/mountain.png" alt="montagne">
-                        <%}else if (grille[i][j] instanceof Ville){
-                            if (((Ville) grille[i][j]).getProprietaire() == null){%>
+                        <%}else if (grille[i][j].getElement() instanceof Ville){
+                            if (((Ville) grille[i][j].getElement()).getProprietaire() == null){%>
                                 <img style="border:3px solid grey" src="icons/Small/city.png"  alt="ville indé">
-                            <%}else if (((Ville) grille[i][j]).getProprietaire().getLogin().equals(joueurConnecte.getLogin())){%>
+                            <%}else if (((Ville) grille[i][j].getElement()).getProprietaire().getLogin().equals(joueurConnecte.getLogin())){%>
                                 <img class="img-soldat-alie" style="border:3px solid green" src="icons/Small/city.png"  alt="ville alié">
                             <%}else{%>
                                 <img style="border:3px solid red" src="icons/Small/city.png"  alt="ville ennemi">
                             <%}%>
-                        <%}else if (grille[i][j] instanceof Foret){%>
+                        <%}else if (grille[i][j].getElement() instanceof Foret){%>
                             <img src="icons/Small/forest.png"  alt="foret">
-                        <%}else if (grille[i][j] instanceof Soldat){
-                            if (((Soldat) grille[i][j]).getProprietaire() == null){%>
-                                <img style="border:3px solid grey" src="icons/Small/soldier.png"  alt="soldat indé">
-                            <%}
-                            else if (((Soldat) grille[i][j]).getProprietaire().getLogin().equals(joueurConnecte.getLogin())){%>
+                        <%}
+                    }if (grille[i][j].getSoldat()!=null){
+                        if (grille[i][j].getSoldat().getProprietaire() == null){%>
+                        <img style="border:3px solid grey" src="icons/Small/soldier.png"  alt="soldat indé">
+                        <%}
+                        else if (grille[i][j].getSoldat().getProprietaire().getLogin().equals(joueurConnecte.getLogin())){%>
+                        <img class="img-soldat-alie" style="border:3px solid green" src="icons/Small/soldier.png"  alt="soldat alié" onclick="clicSoldat(this, <%=i%>, <%=j%>)">
+                        <%}else{%>
+                        <img style="border:3px solid red" src="icons/Small/soldier.png"  alt="soldat ennemi">
+                        <%}
+                            }%>
 
-                        <img class="img-soldat-alie" style="border:3px solid green" src="icons/Small/soldier.png"  alt="soldat alié" onclick="clicSoldat(this, <%=grille[i][j].getX()%>, <%=grille[i][j].getY()%>)">
-                            <%}else{%>
-                                <img style="border:3px solid red" src="icons/Small/soldier.png"  alt="soldat ennemi">
-                            <%}
-                        }
-                    }%>
                     </div></td>
                 <%}%>
             </tr>
@@ -114,10 +117,10 @@
     var img_selectionne_x = 0
     var img_selectionne_y = 0
     var grille = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]]
-    <%for (int i=0;i<10;i++){%>
+    <% for (int i=0;i<10;i++){%>
         <%for (int j=0;j<10;j++){
-        if (grille[i][j] instanceof Soldat){%>
-            grille[<%=i%>][<%=j%>] = <%=((Soldat)grille[i][j]).getPoints_defence()%>
+        if (grille[i][j].getSoldat() != null){%>
+            grille[<%=i%>][<%=j%>] = <%=grille[i][j].getSoldat().getPoints_defence()%>
         <%}}
     }%>
     function clicSoldat(image, x, y){
@@ -129,7 +132,9 @@
         image.style.borderColor="blue"
         img_selectionne_x = x
         img_selectionne_y = y
-        var text_points_defense = document.getElementById("nb-points-defense")
+        console.log(x)
+        console.log(y)
+        const text_points_defense = document.getElementById("nb-points-defense");
         text_points_defense.innerHTML = "Points de défense : " + grille[parseInt(x)][parseInt(y)].toString()
     }
     function allerGauche(login) {

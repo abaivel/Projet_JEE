@@ -1,9 +1,8 @@
-package com.projet.model.Tuile;
+package com.projet.model.Element;
 
-import com.projet.model.JPA.Joueur;
 import com.projet.model.JoueurDto;
 
-public class Ville extends Tuile {
+public class Ville extends Element {
     private int points_defense;
     private JoueurDto proprietaire;
 

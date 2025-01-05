@@ -1,7 +1,8 @@
 package com.projet.controller;
 
 import com.projet.model.JoueurDto;
-import com.projet.model.Tuile.Tuile;
+import com.projet.model.Element.Element;
+import com.projet.model.Tuile;
 import com.projet.service.CarteService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,7 +24,7 @@ public class ActionsControllerServlet extends HttpServlet {
         int yOld = Integer.parseInt(req.getParameter("y_old"));
         int xNew = Integer.parseInt(req.getParameter("x_new"));
         int yNew = Integer.parseInt(req.getParameter("y_new"));
-        JoueurDto res = CarteService.moveTuile(xOld, yOld , xNew, yNew);
+        JoueurDto res = CarteService.moveTuile(xOld, yOld , xNew, yNew, joueurConnecte.getLogin());
         List<JoueurDto> joueurs = CarteService.getJoueurs();
         if (res !=null) {
             Tuile[][] grille = CarteService.getCarte();

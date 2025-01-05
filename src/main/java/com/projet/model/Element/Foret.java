@@ -1,7 +1,7 @@
-package com.projet.model.Tuile;
+package com.projet.model.Element;
 
 
-public class Foret extends Tuile {
+public class Foret extends Element {
     private int quantite_production;
 
     public Foret(int x, int y, int quantite_production) {

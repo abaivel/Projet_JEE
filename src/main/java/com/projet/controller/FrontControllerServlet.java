@@ -1,7 +1,8 @@
 package com.projet.controller;
 
 import com.projet.model.JoueurDto;
-import com.projet.model.Tuile.Tuile;
+import com.projet.model.Element.Element;
+import com.projet.model.Tuile;
 import com.projet.service.CarteService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
