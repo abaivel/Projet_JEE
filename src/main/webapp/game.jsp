@@ -196,7 +196,7 @@
             y_new: img_selectionne_y-1,
             login: login
         });
-        callMoveServlet(data)
+        callServlet(data, "/move");
     }
     function allerDroite(login) {
         const data = new URLSearchParams({
@@ -206,7 +206,7 @@
             y_new: img_selectionne_y+1,
             login: login
         });
-        callMoveServlet(data)
+        callServlet(data, "/move");
     }
     function allerHaut(login) {
         const data = new URLSearchParams({
@@ -216,7 +216,7 @@
             y_new: img_selectionne_y,
             login: login
         });
-        callMoveServlet(data)
+        callServlet(data, "/move");
     }
     function allerBas(login) {
         const data = new URLSearchParams({
@@ -226,36 +226,9 @@
             y_new: img_selectionne_y,
             login: login
         });
-        callMoveServlet(data)
+        callServlet(data, "/move");
     }
-    function callMoveServlet(data){
-        const apiUrl = '${pageContext.request.contextPath}/move';
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: data.toString(),
-        };
 
-        fetch(apiUrl, requestOptions)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                    //afficher une erreur sur la page
-                }else {
-                    location.reload();
-                }
-            })
-            .catch(err => {
-                console.log(err.message);
-            });
-    }
-    function pollServer() {
-        location.reload()
-    }
-    // Polling chaque 5 secondes
-    //setInterval(pollServer, 5000);
 
     function seSoigner(login){
         const data = new URLSearchParams({
@@ -263,64 +236,20 @@
             y: img_selectionne_y,
             login: login
         });
-        callSoignerServlet(data);
-    }
-
-    function callSoignerServlet(data){
-        const apiUrl = '${pageContext.request.contextPath}/soigner';
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: data.toString(),
-        };
-
-        fetch(apiUrl, requestOptions)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                    //afficher une erreur sur la page
-                }else {
-                    location.reload();
-                }
-            })
-            .catch(err => {
-                console.log(err.message);
-            });
-    }
-    function callPasserTourServlet(data){
-        const apiUrl = '${pageContext.request.contextPath}/pass';
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: data.toString(),
-        };
-
-        fetch(apiUrl, requestOptions)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                    //afficher une erreur sur la page
-                }else {
-                    location.reload();
-                }
-            })
-            .catch(err => {
-                console.log(err.message);
-            });
+        callServlet(data, "/soigner");
     }
 
     function passerTour(login){
         const data = new URLSearchParams({
-            x: img_selectionne_x,
-            y: img_selectionne_y,
             login: login
         });
-        callPasserTourServlet(data);
+        callServlet(data, "/pass");
     }
+    function pollServer() {
+        location.reload()
+    }
+    // Polling chaque 5 secondes
+    //setInterval(pollServer, 5000);
 
 </script>
 </body>
