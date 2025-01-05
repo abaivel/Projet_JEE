@@ -6,6 +6,15 @@ public class Soldat {
     private int points_defence;
     private JoueurDto proprietaire;
     private final int PVMax;
+
+    public boolean CanPlay() {
+        return canPlay;
+    }
+
+    public void setCanPlay(boolean canPlay) {
+        this.canPlay = canPlay;
+    }
+
     private boolean canPlay;
 
     public Soldat(int x, int y, int points_defence, JoueurDto proprietaire) {

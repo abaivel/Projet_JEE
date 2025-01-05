@@ -1,10 +1,7 @@
 package com.projet.service;
 
-import com.projet.model.Carte;
-import com.projet.model.JoueurDto;
-import com.projet.model.PartieDto;
+import com.projet.model.*;
 import com.projet.model.Element.Element;
-import com.projet.model.Tuile;
 
 import java.util.List;
 
@@ -43,7 +40,9 @@ public class CarteService {
     public static JoueurDto moveTuile(int oldX, int oldY, int newX, int newY, String login){
         PartieDto p = PartieDto.getPartieDto();
         Carte c = p.getCarte();
-        if (newX>=0 && newY>=0 && newX<10 && newY<10 && c.IsTuileOccupable(newX, newY, login)) {
+        Tuile tuile = c.getTuile(oldX, oldY);
+        Soldat s = tuile.getSoldat();
+        if (newX>=0 && newY>=0 && newX<10 && newY<10 && c.IsTuileOccupable(newX, newY, login) && s.CanPlay()) {
             Tuile t = c.getTuile(oldX, oldY);
             t.setX(newX);
             t.setY(newY);
@@ -51,7 +50,8 @@ public class CarteService {
             t.getSoldat().setY(newY);
             c.setTuileSoldat(newX, newY, t.getSoldat());
             c.setTuileSoldat(oldX, oldY, null);
-            return p.tourSuivant();
+            s.setCanPlay(false);
+            return p.getJoueurTour();
         }
         return null;
     }
@@ -60,17 +60,28 @@ public class CarteService {
         PartieDto p = PartieDto.getPartieDto();
         Carte c = p.getCarte();
         Tuile tuile = c.getTuile(x, y);
-        tuile.getSoldat().setPoints_defence(tuile.getSoldat().getPoints_defence()+10);
+        Soldat s = tuile.getSoldat();
+        if (s.CanPlay()) {
+            s.setPoints_defence(tuile.getSoldat().getPoints_defence() + 10);
+            s.setCanPlay(false);
+        }
         return p.getJoueurTour();
     }
 
     public static JoueurDto passerTour(String login){
         return PartieDto.getPartieDto().tourSuivant();
     }
-    public static JoueurDto fourrage(String login){
+    public static JoueurDto fourrage(int x, int y, String login){
         PartieDto p = PartieDto.getPartieDto();
         JoueurDto j = CarteService.getJoueur(login);
-        j.setPoints_production(j.getPoints_production()+10);
+        Carte c = p.getCarte();
+        Tuile tuile = c.getTuile(x, y);
+        Soldat s = tuile.getSoldat();
+        if (s.CanPlay()) {
+            j.setPoints_production(j.getPoints_production() + 10);
+            s.setCanPlay(false);
+        }
+
         return p.getJoueurTour();
     }
 }

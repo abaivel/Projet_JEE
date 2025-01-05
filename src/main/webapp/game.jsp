@@ -182,6 +182,8 @@
     }
     function fourrager(login) {
         const data = new URLSearchParams({
+            x: img_selectionne_x,
+            y: img_selectionne_y,
             login: login
         });
         callServlet(data, "/fourrage");

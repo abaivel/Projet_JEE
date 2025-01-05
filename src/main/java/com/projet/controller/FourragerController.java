@@ -18,7 +18,11 @@ public class FourragerController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         JoueurDto joueurConnecte = (JoueurDto) session.getAttribute("joueurConnecte");
-        JoueurDto res = CarteService.fourrage(joueurConnecte.getLogin());
+        int x = Integer.parseInt(req.getParameter("x"));
+        int y = Integer.parseInt(req.getParameter("y"));
+
+
+        JoueurDto res = CarteService.fourrage(x,y,joueurConnecte.getLogin());
         System.out.println(res.getPoints_production());
         List<JoueurDto> joueurs = CarteService.getJoueurs();
         Tuile[][] grille = CarteService.getCarte();
