@@ -93,10 +93,16 @@
         <ul>
             <%for (JoueurDto j : joueurs){%>
             <%if (j.getLogin().equals(joueurConnecte.getLogin())){%>
-                <li class = "name-self"><%=j.getLogin()%> (vous)</li>
+                <%if (joueurTour.getLogin().equals(j.getLogin())){%>
+                <li class ="name-tour"><%=j.getLogin()%> (vous)</li>
+                <%}else{%>
+                <li><%=j.getLogin()%> (vous)</li>
+            <%}}else{%>
+            <%if (joueurTour.getLogin().equals(j.getLogin())){%>
+            <li class ="name-tour"><%=j.getLogin()%></li>
             <%}else{%>
                 <li><%=j.getLogin()%></li>
-            <%}%>
+            <%}}%>
             <%}%>
         </ul>
         <%if (joueurTour.getLogin().equals(joueurConnecte.getLogin())){%>
@@ -108,7 +114,7 @@
         <p>Points de production : <%=joueurConnecte.getPoints_production()%></p>
         <form>
             <%if (joueurConnecte.getPoints_production()>=15){%>
-            <input type="submit" value="Recruter un soldat : 15 points de production">
+            <button onclick="recruter('<%=joueurConnecte.getLogin()%>')"> Recruter un soldat : 15 points de production </button>
             <%}else{%>
             <input disabled type="submit" value="Recruter un soldat : 15 points de production">
             <%}%>
@@ -246,6 +252,12 @@
             login: login
         });
         callServlet(data, "/pass");
+    }
+    function recruter(login){
+        const data = new URLSearchParams({
+            login: login
+        });
+        callServlet(data, "/recruter");
     }
     function pollServer() {
         location.reload()

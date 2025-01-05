@@ -22,6 +22,7 @@ public class Soldat {
         this.proprietaire = proprietaire;
         this.PVMax = points_defence;
         this.canPlay = true;
+        proprietaire.addSoldat(this);
     }
 
     public JoueurDto getProprietaire() {

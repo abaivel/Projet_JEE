@@ -69,6 +69,7 @@ public class CarteService {
     }
 
     public static JoueurDto passerTour(String login){
+        CarteService.getJoueur(login).resetSoldats();
         return PartieDto.getPartieDto().tourSuivant();
     }
     public static JoueurDto fourrage(int x, int y, String login){
@@ -83,5 +84,18 @@ public class CarteService {
         }
 
         return p.getJoueurTour();
+    }
+    public static boolean addSoldat(String login){
+        PartieDto p = PartieDto.getPartieDto();
+        JoueurDto j = CarteService.getJoueur(login);
+        Carte c = p.getCarte();
+        assert j != null;
+        if (j.getPoints_production()>=15){
+            boolean res = c.addSoldat(new Soldat(0,0,10,j));
+            if(res)
+                j.setPoints_production(j.getPoints_production()-15);
+            return res;
+        }
+        return true;
     }
 }
