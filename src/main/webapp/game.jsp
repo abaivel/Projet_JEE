@@ -210,7 +210,9 @@
             });
     }
     function pollServer() {
-        location.reload()
+        <%if (!joueurTour.getLogin().equals(joueurConnecte.getLogin())){%>
+            location.reload()
+        <%}%>
     }
     // Polling chaque 5 secondes
     setInterval(pollServer, 5000);
