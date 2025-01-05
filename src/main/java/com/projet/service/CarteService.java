@@ -55,4 +55,16 @@ public class CarteService {
         }
         return null;
     }
+
+    public static JoueurDto soignerSoldat(int x, int y, String login){
+        PartieDto p = PartieDto.getPartieDto();
+        Carte c = p.getCarte();
+        Tuile tuile = c.getTuile(x, y);
+        tuile.getSoldat().setPoints_defence(tuile.getSoldat().getPoints_defence()+10);
+        return p.getJoueurTour();
+    }
+
+    public static JoueurDto passerTour(String login){
+        return PartieDto.getPartieDto().tourSuivant();
+    }
 }
