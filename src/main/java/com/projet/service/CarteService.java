@@ -67,4 +67,10 @@ public class CarteService {
     public static JoueurDto passerTour(String login){
         return PartieDto.getPartieDto().tourSuivant();
     }
+    public static JoueurDto fourrage(String login){
+        PartieDto p = PartieDto.getPartieDto();
+        JoueurDto j = CarteService.getJoueur(login);
+        j.setPoints_production(j.getPoints_production()+10);
+        return p.getJoueurTour();
+    }
 }

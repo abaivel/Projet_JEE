@@ -6,11 +6,13 @@ public class Soldat {
     private int points_defence;
     private JoueurDto proprietaire;
     private final int PVMax;
+    private boolean canPlay;
 
     public Soldat(int x, int y, int points_defence, JoueurDto proprietaire) {
         this.points_defence = points_defence;
         this.proprietaire = proprietaire;
         this.PVMax = points_defence;
+        this.canPlay = true;
     }
 
     public JoueurDto getProprietaire() {

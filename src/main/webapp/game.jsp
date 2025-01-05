@@ -25,7 +25,7 @@
 <button type="button" name="back" onclick="history.back()">Retour</button>
 <div style="display: flex;gap: 5%;">
     <div>
-        <table>
+        <table id="map">
             <%for (int i=0;i<10;i++){%>
             <tr>
                 <%for (int j=0;j<10;j++){%>
@@ -68,10 +68,10 @@
                     <button onclick="allerDroite('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-droite"><img src="icons/fleche_droite.png"></button>
                     <button onclick="allerBas('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-bas"><img src="icons/fleche_bas.png"></button>
                 </div>
-                <div class="div-others-buttons">
+                <div class="div-others-buttons" id="other-button-div">
                     <button onclick="seSoigner('<%=joueurConnecte.getLogin()%>')" class="other-button">Se soigner</button>
-                    <button class="other-button">Fourrager</button>
-                    <button onclick="passerTour('<%=joueurConnecte.getLogin()%>')" class="other-button">Passer son tour</button>
+                    <button onclick="passerTour('<%=joueurConnecte.getLogin()%>')" class="other-button">finir le tour</button>
+                    <button onclick="fourrager('<%=joueurConnecte.getLogin()%>')" style="display: none;" class="other-button" id="fourrage">Fourrager</button>
                 </div>
                 <p style="margin: 0 0 0 10px;" id="nb-points-defense"></p>
             <%}else{%>
@@ -83,7 +83,7 @@
                 </div>
                 <div class="div-others-buttons">
                     <button disabled class="other-button">Se soigner</button>
-                    <button disabled class="other-button">Fourrager</button>
+                    <button disabled class="other-button">finir le tour</button>
                 </div>
             <%}%>
         </div>
@@ -92,7 +92,11 @@
         <p>Joueurs :</p>
         <ul>
             <%for (JoueurDto j : joueurs){%>
+            <%if (j.getLogin().equals(joueurConnecte.getLogin())){%>
+                <li class = "name-self"><%=j.getLogin()%> (vous)</li>
+            <%}else{%>
                 <li><%=j.getLogin()%></li>
+            <%}%>
             <%}%>
         </ul>
         <%if (joueurTour.getLogin().equals(joueurConnecte.getLogin())){%>
@@ -137,7 +141,53 @@
         console.log(y)
         const text_points_defense = document.getElementById("nb-points-defense");
         text_points_defense.innerHTML = "Points de défense : " + grille[parseInt(x)][parseInt(y)].toString()
+
+        //faire apparaitre les boutons
+        var button= document.getElementById("fourrage");
+        if (getCell("map",x,y).querySelector('img').alt === "foret"){ //tester si la case est une forêt, si oui, on affiche le bouton
+            button.style.display = 'block';
+        }else{
+            button.style.display = 'none';
+        }
+
     }
+    function getCell(tableId, rowIndex, colIndex) {
+        const table = document.getElementById(tableId);
+        const row = table.rows[rowIndex];
+        return row ? row.cells[colIndex] : null;
+    }
+    function callServlet(data, servlet){
+        const apiUrl = '${pageContext.request.contextPath}/'+servlet;
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: data.toString(),
+        };
+
+        fetch(apiUrl, requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                    //afficher une erreur sur la page
+                }else {
+                    location.reload();
+                }
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
+
+    }
+    function fourrager(login) {
+        const data = new URLSearchParams({
+            login: login
+        });
+        callServlet(data, "/fourrage");
+    }
+
+
     function allerGauche(login) {
         const data = new URLSearchParams({
             x_old: img_selectionne_x,
@@ -239,6 +289,29 @@
                 console.log(err.message);
             });
     }
+    function callPasserTourServlet(data){
+        const apiUrl = '${pageContext.request.contextPath}/pass';
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: data.toString(),
+        };
+
+        fetch(apiUrl, requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                    //afficher une erreur sur la page
+                }else {
+                    location.reload();
+                }
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
+    }
 
     function passerTour(login){
         const data = new URLSearchParams({
@@ -246,7 +319,7 @@
             y: img_selectionne_y,
             login: login
         });
-        callSoignerServlet(data);
+        callPasserTourServlet(data);
     }
 
 </script>
