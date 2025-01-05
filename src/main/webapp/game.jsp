@@ -69,8 +69,9 @@
                     <button onclick="allerBas('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-bas"><img src="icons/fleche_bas.png"></button>
                 </div>
                 <div class="div-others-buttons">
-                    <button class="other-button">Se soigner</button>
+                    <button onclick="seSoigner('<%=joueurConnecte.getLogin()%>')" class="other-button">Se soigner</button>
                     <button class="other-button">Fourrager</button>
+                    <button onclick="passerTour('<%=joueurConnecte.getLogin()%>')" class="other-button">Passer son tour</button>
                 </div>
                 <p style="margin: 0 0 0 10px;" id="nb-points-defense"></p>
             <%}else{%>
@@ -205,6 +206,48 @@
     }
     // Polling chaque 5 secondes
     //setInterval(pollServer, 5000);
+
+    function seSoigner(login){
+        const data = new URLSearchParams({
+            x: img_selectionne_x,
+            y: img_selectionne_y,
+            login: login
+        });
+        callSoignerServlet(data);
+    }
+
+    function callSoignerServlet(data){
+        const apiUrl = '${pageContext.request.contextPath}/soigner';
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: data.toString(),
+        };
+
+        fetch(apiUrl, requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                    //afficher une erreur sur la page
+                }else {
+                    location.reload();
+                }
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
+    }
+
+    function passerTour(login){
+        const data = new URLSearchParams({
+            x: img_selectionne_x,
+            y: img_selectionne_y,
+            login: login
+        });
+        callSoignerServlet(data);
+    }
 
 </script>
 </body>
