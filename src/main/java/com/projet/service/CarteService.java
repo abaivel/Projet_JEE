@@ -55,9 +55,9 @@ public class CarteService {
             c.setTuileSoldat(newX, newY, t.getSoldat());
             c.setTuileSoldat(oldX, oldY, null);
             s.setCanPlay(false);
-            Tuile s = c.IsNextToSoldat(newX,newY,login);
-            if (s!=null){
-                return s;
+            Tuile r = c.IsNextToSoldat(newX,newY,login);
+            if (r!=null){
+                return r;
             }
             Tuile v = c.IsNextToVille(newX, newY,login);
             if (v!=null){
