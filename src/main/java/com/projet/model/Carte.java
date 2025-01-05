@@ -52,8 +52,8 @@ public class Carte {
             do {
                 xRandom = (int) (Math.random() * 10);
                 yRandom = (int) (Math.random() * 10);
-            }while (!IsTuileEmpty(xRandom, yRandom));
-            grille[xRandom][yRandom].setElement(new Ville(xRandom, yRandom, (int) (Math.random() * 10)));
+            }while (!IsTuileEmpty(xRandom, yRandom) || IsNextToVille(xRandom, yRandom, null)!=null);
+            grille[xRandom][yRandom].setElement(new Ville(xRandom, yRandom, (int) (Math.random() * 10)+5, (int) (Math.random() * 10)));
         }
     }
 
@@ -77,6 +77,48 @@ public class Carte {
             }
         }
         return false;
+    }
+
+    public Tuile IsNextToSoldat(int x, int y, String login){
+        for (int i=-1; i<=1;i++){
+            for (int j=-1; j<=1;j++){
+                if (i!=0 || j!=0){
+                    int xCase = x+i;
+                    int yCase = y+j;
+                    if (xCase>=0 && yCase>=0 && xCase<10 && yCase<10){
+                        Tuile t = grille[xCase][yCase];
+                        if (t.getSoldat() != null){
+                            if (login == null || !t.getSoldat().getProprietaire().getLogin().equals(login)){
+                                return t;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public Tuile IsNextToVille(int x, int y, String login){
+        for (int i=-1; i<=1;i++){
+            for (int j=-1; j<=1;j++){
+                if (i!=0 || j!=0){
+                    int xCase = x+i;
+                    int yCase = y+j;
+                    if (xCase>=0 && yCase>=0 && xCase<10 && yCase<10){
+                        Tuile t = grille[xCase][yCase];
+                        if (t.getElement() != null){
+                            if (t.getElement() instanceof Ville){
+                                if (login == null || ((Ville) t.getElement()).getProprietaire()==null || !((Ville) t.getElement()).getProprietaire().getLogin().equals(login)) {
+                                    return t;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public Tuile getTuile(int x, int y) {

@@ -9,6 +9,7 @@ public class Soldat {
     public Soldat(int x, int y, int points_defence, JoueurDto proprietaire) {
         this.points_defence = points_defence;
         this.proprietaire = proprietaire;
+        proprietaire.addSoldat(this);
     }
 
     public JoueurDto getProprietaire() {
@@ -17,6 +18,7 @@ public class Soldat {
 
     public void setProprietaire(JoueurDto proprietaire) {
         this.proprietaire = proprietaire;
+        proprietaire.addSoldat(this);
     }
 
     public int getPoints_defence() {
