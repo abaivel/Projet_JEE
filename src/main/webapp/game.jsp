@@ -25,7 +25,7 @@
 <button type="button" name="back" onclick="history.back()">Retour</button>
 <div style="display: flex;gap: 5%;">
     <div>
-        <table id="map">
+        <table>
             <%for (int i=0;i<10;i++){%>
             <tr>
                 <%for (int j=0;j<10;j++){%>
@@ -102,7 +102,6 @@
             <li class ="name-tour"><%=j.getLogin()%></li>
             <%}else{%>
                 <li><%=j.getLogin()%></li>
-            <%}}%>
             <%}%>
         </ul>
         <%if (joueurTour.getLogin().equals(joueurConnecte.getLogin())){%>
@@ -237,7 +236,6 @@
         callServlet(data, "/move");
     }
 
-
     function seSoigner(login){
         const data = new URLSearchParams({
             x: img_selectionne_x,
@@ -260,11 +258,12 @@
         callServlet(data, "/recruter");
     }
     function pollServer() {
+        <%if (!joueurTour.getLogin().equals(joueurConnecte.getLogin())){%>
         location.reload()
+        <%}%>
     }
     // Polling chaque 5 secondes
-    //setInterval(pollServer, 5000);
-
+    setInterval(pollServer, 5000);
 </script>
 </body>
 </html>

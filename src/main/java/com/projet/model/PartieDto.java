@@ -1,5 +1,7 @@
 package com.projet.model;
 
+import com.projet.model.Element.Ville;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +25,8 @@ public class PartieDto {
         do {
             xRandom = (int) (Math.random() * 10);
             yRandom = (int) (Math.random() * 10);
-        }while (!carte.IsTuileOccupable(xRandom, yRandom, joueur.getLogin()));
-        carte.setTuileSoldat(xRandom,yRandom,new Soldat(xRandom,yRandom, 10, joueur));
+        }while (!carte.IsTuileOccupable(xRandom, yRandom, joueur.getLogin()) || carte.IsNextToSoldat(xRandom, yRandom, joueur.getLogin())!=null || carte.IsNextToVille(xRandom, yRandom, joueur.getLogin())!=null);
+        carte.setTuileSoldat(xRandom,yRandom,new Soldat(xRandom,yRandom, 20, joueur));
     }
 
     public List<JoueurDto> getJoueurs(){
@@ -48,6 +50,7 @@ public class PartieDto {
     }
 
     public JoueurDto tourSuivant(){
+        updatePointsProduction();
         if (!joueurs.isEmpty()) {
             if (joueurTour == null) {
                 return joueurs.get(0);
@@ -62,6 +65,14 @@ public class PartieDto {
             return joueurTour;
         }else{
             return null;
+        }
+    }
+
+    public void updatePointsProduction(){
+        for (JoueurDto joueur : joueurs) {
+            for (Ville ville : joueur.getVilles()) {
+                joueur.setPoints_production(joueur.getPoints_production()+ville.getPoints_production());
+            }
         }
     }
 

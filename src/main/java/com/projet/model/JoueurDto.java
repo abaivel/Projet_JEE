@@ -17,6 +17,7 @@ public class JoueurDto {
         this.score = 0;
         this.points_production = 0;
         this.soldats = new ArrayList<Soldat>();
+        this.villes = new ArrayList<>();
     }
 
     public int getScore() {

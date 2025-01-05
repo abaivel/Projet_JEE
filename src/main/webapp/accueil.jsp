@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Accueil</title>
 </head>
 <body style="background-image: url(images/fond_ecran_connexion.jpeg); background-repeat: no-repeat; background-size: cover;width: 100%; height: 100%; margin: 0; overflow: hidden">
 <%JoueurDto j = (JoueurDto) request.getAttribute("joueur");%>
