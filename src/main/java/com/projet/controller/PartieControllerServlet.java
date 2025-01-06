@@ -17,6 +17,6 @@ public class PartieControllerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Integer> dicoScores =  PartieService.finirPartie();
         req.setAttribute("scores", dicoScores);
-        this.getServletContext().getRequestDispatcher("/score.jsp").forward(req, resp);
+        this.getServletContext().getRequestDispatcher("/recapScores.jsp").forward(req, resp);
     }
 }
