@@ -18,6 +18,6 @@ public class PartieControllerServlet extends HttpServlet {
         Map<String, Integer> dicoScores =  PartieService.finirPartie();
         PartieService.generateNewPartieDto();
         req.setAttribute("scores", dicoScores);
-        this.getServletContext().getRequestDispatcher("/score.jsp").forward(req, resp);
+        this.getServletContext().getRequestDispatcher("/recapScores.jsp").forward(req, resp);
     }
 }
