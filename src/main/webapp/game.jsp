@@ -25,7 +25,7 @@
 <button type="button" name="back" onclick="history.back()">Retour</button>
 <div style="display: flex;gap: 5%;">
     <div>
-        <table>
+        <table id = "map">
             <%for (int i=0;i<10;i++){%>
             <tr>
                 <%for (int j=0;j<10;j++){%>
@@ -102,7 +102,9 @@
             <li class ="name-tour"><%=j.getLogin()%></li>
             <%}else{%>
                 <li><%=j.getLogin()%></li>
-            <%}%>
+            <%}
+            }
+            }%>
         </ul>
         <%if (joueurTour.getLogin().equals(joueurConnecte.getLogin())){%>
             <p>C'est votre tour</p>
@@ -149,7 +151,8 @@
 
         //faire apparaitre les boutons
         var button= document.getElementById("fourrage");
-        if (getCell("map",x,y).querySelector('img').alt === "foret"){ //tester si la case est une forêt, si oui, on affiche le bouton
+        const cell = getCell("map",x,y).querySelectorAll("img")
+        if (Array.from(cell).some(img => img.getAttribute("alt") === "foret")){ //tester si la case est une forêt, si oui, on affiche le bouton
             button.style.display = 'block';
         }else{
             button.style.display = 'none';

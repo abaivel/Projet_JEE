@@ -1,6 +1,7 @@
 package com.projet.service;
 
 import com.projet.model.Carte;
+import com.projet.model.Element.Foret;
 import com.projet.model.Element.Ville;
 import com.projet.model.JoueurDto;
 import com.projet.model.PartieDto;
@@ -118,7 +119,7 @@ public class CarteService {
         Carte c = p.getCarte();
         Tuile tuile = c.getTuile(x, y);
         Soldat s = tuile.getSoldat();
-        if (s.CanPlay()) {
+        if (s.CanPlay() && tuile.getElement() instanceof Foret) {
             j.setPoints_production(j.getPoints_production() + 10);
             s.setCanPlay(false);
         }
