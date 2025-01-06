@@ -1,4 +1,4 @@
-package com.example.projet_jee;
+package com.projet;
 
 import java.io.*;
 
