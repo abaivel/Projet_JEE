@@ -120,7 +120,7 @@ public class CarteService {
         Tuile tuile = c.getTuile(x, y);
         Soldat s = tuile.getSoldat();
         if (s.CanPlay() && tuile.getElement() instanceof Foret) {
-            j.setPoints_production(j.getPoints_production() + 10);
+            j.setPoints_production(j.getPoints_production() +((Foret) tuile.getElement()).getQuantite_production());
             s.setCanPlay(false);
         }
 
