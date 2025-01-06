@@ -47,7 +47,7 @@ public class CarteService {
         Carte c = p.getCarte();
         Tuile tuile = c.getTuile(oldX, oldY);
         Soldat s = tuile.getSoldat();
-        if (newX>=0 && newY>=0 && newX<10 && newY<10 && c.IsTuileOccupable(newX, newY, login)) {
+        if (s.CanPlay() && newX>=0 && newY>=0 && newX<10 && newY<10 && c.IsTuileOccupable(newX, newY, login)) {
             Tuile t = c.getTuile(oldX, oldY);
             t.setX(newX);
             t.setY(newY);
