@@ -27,7 +27,17 @@ public class Carte {
         this.grille = grille;
     }
 
+    public void emptyGrille() {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                grille[i][j].setElement(null);
+                grille[i][j].setSoldat(null);
+            }
+        }
+    }
+
     public void setGrilleAleatoire(){
+        emptyGrille();
         for (int i = 0; i<10;i++){
             int xRandom = 0;
             int yRandom = 0;

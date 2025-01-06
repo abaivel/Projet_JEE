@@ -91,16 +91,19 @@ public class PartieService {
     }
 
     public static void generateNewPartieDto(){
+        CarteService.generateNewPartie();
         EntityManager em = PersistenceManager.getEntityManager();
         Partie partieActive = PartieService.getPartieActive();
         if (partieActive != null){
             String query = "select jp from JoueurPartie jp where jp.partie.idPartie=:idPartie";
             List<JoueurPartie> joueurParties = em.createQuery(query, JoueurPartie.class).setParameter("idPartie", partieActive.getIdPartie()).getResultList();
-            for (JoueurPartie jp : joueurParties){
-                Joueur j = jp.getJoueur();
-                JoueurDto joueurDto = new JoueurDto(j.getLogin());
-                CarteService.addJoueur(joueurDto);
-                jp.setScore(0);
+            if (joueurParties!=null) {
+                for (JoueurPartie jp : joueurParties) {
+                    Joueur j = jp.getJoueur();
+                    JoueurDto joueurDto = new JoueurDto(j.getLogin());
+                    CarteService.addJoueur(joueurDto);
+                    jp.setScore(0);
+                }
             }
         }
     }
@@ -109,7 +112,9 @@ public class PartieService {
         Map<String, Integer> dicoScores = new Hashtable<String, Integer>();
         EntityManager em = PersistenceManager.getEntityManager();
         Partie partieActive = PartieService.getPartieActive();
-        partieActive.setDateFin(LocalDate.now());
+        em.getTransaction().begin();
+        em.find(Partie.class,partieActive.getIdPartie()).setDateFin(LocalDate.now());
+        em.getTransaction().commit();
         String query = "select jp from JoueurPartie jp where jp.partie.idPartie=:idPartie";
         List<JoueurPartie> joueurParties = em.createQuery(query, JoueurPartie.class).setParameter("idPartie", partieActive.getIdPartie()).getResultList();
         for (JoueurPartie jp : joueurParties){
