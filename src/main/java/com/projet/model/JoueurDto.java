@@ -70,4 +70,9 @@ public class JoueurDto {
     public String getLogin() {
         return login;
     }
+    public void resetSoldats() {
+        for (Soldat soldat : soldats) {
+            soldat.setCanPlay(true);
+        }
+    }
 }

@@ -32,11 +32,10 @@ public class ActionsControllerServlet extends HttpServlet {
             resp.getWriter().write("{\"redirect\": \"combat?xTuile="+res.getX()+"&yTuile="+res.getY()+"&xSoldat="+xNew+"&ySoldat="+yNew+"\"}");
             //this.getServletContext().getRequestDispatcher("/combat.jsp").forward(req, resp);
         }else {
-            JoueurDto joueurTour = CarteService.tourSuivant();
             List<JoueurDto> joueurs = CarteService.getJoueurs();
             Tuile[][] grille = CarteService.getCarte();
             req.setAttribute("joueur", joueurConnecte);
-            req.setAttribute("joueurTour", joueurTour);
+            req.setAttribute("joueurTour", joueurConnecte);
             req.setAttribute("grille", grille);
             req.setAttribute("joueurs", joueurs);
             resp.setStatus(200);
