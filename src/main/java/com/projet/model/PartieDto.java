@@ -37,6 +37,10 @@ public class PartieDto {
         return this.carte;
     }
 
+    public void setCarte(Carte carte) {
+        this.carte = carte;
+    }
+
     public static PartieDto getPartieDto(){
         if (partieDto == null){
             partieDto = new PartieDto();

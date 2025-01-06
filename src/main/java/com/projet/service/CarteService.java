@@ -76,7 +76,7 @@ public class CarteService {
 
     public static void generateNewPartie(){
         PartieDto p = PartieDto.getPartieDto();
-        p.getCarte().setGrilleAleatoire();
+        p.setCarte(new Carte());
     }
 
     public static void endCombat(Tuile tuileAttaque, Tuile tuileSoldat, int pointsAttaque, int pointsSoldat, JoueurDto joueur){
