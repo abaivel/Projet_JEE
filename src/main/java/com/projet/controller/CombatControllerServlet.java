@@ -42,10 +42,15 @@ public class CombatControllerServlet extends HttpServlet {
         JoueurDto joueurConnecte = (JoueurDto) session.getAttribute("joueurConnecte");
         int attaquePoints = Integer.parseInt(req.getParameter("tuileAttaquePoints"));
         int soldatPoints = Integer.parseInt(req.getParameter("soldatPoints"));
-        CarteService.endCombat(TuileAttaque, TuileSoldat, attaquePoints, soldatPoints, joueurConnecte);
-        CarteService.tourSuivant();
-        resp.setStatus(200);
-        resp.getWriter().write("{\"redirect\": \"game\"}");
+        Tuile t = CarteService.endCombat(TuileAttaque, TuileSoldat, attaquePoints, soldatPoints, joueurConnecte);
+        if (t != null) {
+            resp.setStatus(200);
+            resp.getWriter().write("{\"redirect\": \"combat?xTuile="+t.getX()+"&yTuile="+t.getY()+"&xSoldat="+TuileSoldat.getX()+"&ySoldat="+TuileSoldat.getY()+"\"}");
+        }else {
+            //CarteService.tourSuivant();
+            resp.setStatus(200);
+            resp.getWriter().write("{\"redirect\": \"game\"}");
+        }
 
     }
 }

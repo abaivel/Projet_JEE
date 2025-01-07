@@ -62,7 +62,7 @@ public class Carte {
             do {
                 xRandom = (int) (Math.random() * 10);
                 yRandom = (int) (Math.random() * 10);
-            }while (!IsTuileEmpty(xRandom, yRandom) || IsNextToVille(xRandom, yRandom, null)!=null);
+            }while (!IsTuileEmpty(xRandom, yRandom));
             grille[xRandom][yRandom].setElement(new Ville(xRandom, yRandom, (int) (Math.random() * 10)+5, (int) (Math.random() * 10)));
         }
     }
@@ -74,7 +74,7 @@ public class Carte {
         return grille[x][y].getSoldat()==null && !(grille[x][y].getElement() instanceof Montagne);
     }
 
-    public boolean IsTuileOccupable(int x, int y, String login){
+    public boolean IsTuileOccupable2(int x, int y, String login){
         Tuile t = grille[x][y];
         if (t.getSoldat() != null){
             return false;
@@ -91,8 +91,62 @@ public class Carte {
         }
         return false;
     }
+    public boolean IsTuileOccupable(int x, int y, String login){
+        Tuile t = grille[x][y];
+        if (t.getSoldat() != null) {
+            if (t.getSoldat().getProprietaire().getLogin().equals(login)){
+                return false;
+            }
+        }
+        if (t.getElement() != null) {
+            if (t.getElement() instanceof Montagne){
+                return false;
+            }
+        }
+        return true;
+    }
 
-    public Tuile IsNextToSoldat(int x, int y, String login){
+    public boolean IsThereForet(int x, int y){
+        if (grille[x][y].getElement()==null){
+            return false;
+        }else{
+            return grille[x][y].getElement() instanceof Foret;
+        }
+    }
+
+    public boolean IsThereMontagne(int x, int y){
+        if (grille[x][y].getElement()==null){
+            return false;
+        }else{
+            return grille[x][y].getElement() instanceof Montagne;
+        }
+    }
+
+    public Tuile IsThereEnnemiVille(int x, int y, String login){
+        if (grille[x][y].getElement()!=null){
+            if (grille[x][y].getElement() instanceof Ville){
+                if (((Ville) grille[x][y].getElement()).getProprietaire()==null || !((Ville) grille[x][y].getElement()).getProprietaire().getLogin().equals(login)){
+                    return grille[x][y];
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean IsThereSoldat(int x, int y){
+        return grille[x][y].getSoldat()!=null;
+    }
+
+    public Tuile IsThereSoldatEnnemi(int x, int y, String login){
+        if (grille[x][y].getSoldat()!=null){
+            if (!grille[x][y].getSoldat().getProprietaire().getLogin().equals(login)){
+                return grille[x][y];
+            }
+        }
+        return null;
+    }
+
+    /*public Tuile IsNextToSoldat(int x, int y, String login){
         for (int i=-1; i<=1;i++){
             for (int j=-1; j<=1;j++){
                 if (i!=0 || j!=0){
@@ -132,7 +186,7 @@ public class Carte {
             }
         }
         return null;
-    }
+    }*/
 
     public Tuile getTuile(int x, int y) {
         return grille[x][y];

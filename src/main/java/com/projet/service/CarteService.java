@@ -49,6 +49,14 @@ public class CarteService {
         Soldat s = tuile.getSoldat();
         if (s.CanPlay() && newX>=0 && newY>=0 && newX<10 && newY<10 && c.IsTuileOccupable(newX, newY, login)) {
             Tuile t = c.getTuile(oldX, oldY);
+            Tuile r = c.IsThereSoldatEnnemi(newX,newY, login);
+            if (r!=null){
+                return r;
+            }
+            Tuile v = c.IsThereEnnemiVille(newX, newY,login);
+            if (v!=null){
+                return v;
+            }
             t.setX(newX);
             t.setY(newY);
             t.getSoldat().setX(newX);
@@ -56,14 +64,6 @@ public class CarteService {
             c.setTuileSoldat(newX, newY, t.getSoldat());
             c.setTuileSoldat(oldX, oldY, null);
             s.setCanPlay(false);
-            Tuile r = c.IsNextToSoldat(newX,newY,login);
-            if (r!=null){
-                return r;
-            }
-            Tuile v = c.IsNextToVille(newX, newY,login);
-            if (v!=null){
-                return v;
-            }
         }
         return null;
     }
@@ -83,17 +83,26 @@ public class CarteService {
         p.setCarte(new Carte());
     }
 
-    public static void endCombat(Tuile tuileAttaque, Tuile tuileSoldat, int pointsAttaque, int pointsSoldat, JoueurDto joueur){
+    public static Tuile endCombat(Tuile tuileAttaque, Tuile tuileSoldat, int pointsAttaque, int pointsSoldat, JoueurDto joueur){
         tuileSoldat.getSoldat().setPoints_defence(pointsSoldat);
         if (tuileSoldat.getSoldat().getPoints_defence() <=0){
             tuileSoldat.setSoldat(null);
         }
-        if (tuileAttaque.getElement() instanceof Ville) {
+        if (tuileAttaque.getSoldat() != null){
+            tuileAttaque.getSoldat().setPoints_defence(pointsAttaque);
+            if (tuileAttaque.getSoldat().getPoints_defence() <=0) {
+                tuileAttaque.setSoldat(null);
+                return moveTuile(tuileSoldat.getX(), tuileSoldat.getY(), tuileAttaque.getX(), tuileAttaque.getY(), joueur.getLogin());
+            }
+        }
+        else if (tuileAttaque.getElement()!=null && tuileAttaque.getElement() instanceof Ville) {
             ((Ville) tuileAttaque.getElement()).setPoints_defense(pointsAttaque);
             if (((Ville) tuileAttaque.getElement()).getPoints_defense()<=0){
                 ((Ville) tuileAttaque.getElement()).setProprietaire(joueur);
+                return moveTuile(tuileSoldat.getX(), tuileSoldat.getY(), tuileAttaque.getX(), tuileAttaque.getY(), joueur.getLogin());
             }
         }
+        return null;
 
     }
 
