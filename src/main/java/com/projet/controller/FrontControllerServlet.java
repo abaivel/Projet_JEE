@@ -1,7 +1,6 @@
 package com.projet.controller;
 
 import com.projet.model.JoueurDto;
-import com.projet.model.Element.Element;
 import com.projet.model.Tuile;
 import com.projet.service.CarteService;
 import com.projet.service.JoueurService;

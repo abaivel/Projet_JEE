@@ -6,7 +6,6 @@ import com.projet.model.Element.Ville;
 import com.projet.model.JoueurDto;
 import com.projet.model.PartieDto;
 import com.projet.model.*;
-import com.projet.model.Element.Element;
 
 import java.util.List;
 
