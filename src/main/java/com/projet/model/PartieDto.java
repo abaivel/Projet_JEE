@@ -25,7 +25,7 @@ public class PartieDto {
         do {
             xRandom = (int) (Math.random() * 10);
             yRandom = (int) (Math.random() * 10);
-        }while (!carte.IsTuileOccupable(xRandom, yRandom, joueur.getLogin()) || carte.IsNextToSoldat(xRandom, yRandom, joueur.getLogin())!=null || carte.IsNextToVille(xRandom, yRandom, joueur.getLogin())!=null);
+        }while (!carte.IsTuileEmpty(xRandom, yRandom));
         carte.setTuileSoldat(xRandom,yRandom,new Soldat(xRandom,yRandom, 20, joueur));
     }
 
@@ -54,7 +54,6 @@ public class PartieDto {
     }
 
     public JoueurDto tourSuivant(){
-        updatePointsProduction();
         if (!joueurs.isEmpty()) {
             if (joueurTour == null) {
                 return joueurs.get(0);
@@ -66,6 +65,9 @@ public class PartieDto {
                 indexTour = 0;
             }
             joueurTour = joueurs.get(indexTour);
+            for (Ville ville : joueurTour.getVilles()) {
+                joueurTour.setPoints_production(joueurTour.getPoints_production()+ville.getPoints_production());
+            }
             return joueurTour;
         }else{
             return null;

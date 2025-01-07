@@ -26,10 +26,8 @@ public class ActionsControllerServlet extends HttpServlet {
         int yNew = Integer.parseInt(req.getParameter("y_new"));
         Tuile res = CarteService.moveTuile(xOld, yOld , xNew, yNew, joueurConnecte.getLogin());
         if (res!=null){
-            req.setAttribute("joueur", joueurConnecte);
-            req.setAttribute("TuileAttaque", res);
             resp.setStatus(301);
-            resp.getWriter().write("{\"redirect\": \"combat?xTuile="+res.getX()+"&yTuile="+res.getY()+"&xSoldat="+xNew+"&ySoldat="+yNew+"\"}");
+            resp.getWriter().write("{\"redirect\": \"combat?xTuile="+res.getX()+"&yTuile="+res.getY()+"&xSoldat="+xOld+"&ySoldat="+yOld+"\"}");
             //this.getServletContext().getRequestDispatcher("/combat.jsp").forward(req, resp);
         }else {
             List<JoueurDto> joueurs = CarteService.getJoueurs();

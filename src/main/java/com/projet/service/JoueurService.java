@@ -42,4 +42,13 @@ public class JoueurService {
         }
         return joueurdto;
     }
+
+    public static void addJoueurToPartieActiveIfNotInPartie(String login) {
+        EntityManager em = PersistenceManager.getEntityManager();
+        String query = "select j from Joueur j where j.login = :login";
+        List<Joueur> joueurs = em.createQuery(query, Joueur.class).setParameter("login", login).getResultList();
+        if (joueurs!=null || !joueurs.isEmpty()) {
+            PartieService.addJoueurToPartieActiveIfNotInPartie(joueurs.get(0));
+        }
+    }
 }

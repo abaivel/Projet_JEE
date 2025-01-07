@@ -19,24 +19,26 @@
     Tuile tuileSoldat = (Tuile) request.getAttribute("tuileSoldat");
 %>
 <div style="display: flex; justify-content: space-between;">
-<%if (tuileAttaque.getElement() instanceof Ville){%>
-    <div>
-        <img src="icons/Large/city.png">
-        <p>Points de défense : <span id="points_ville"><%=((Ville) tuileAttaque.getElement()).getPoints_defense()%></span></p>
-    </div>
-    <div>
-    <button onclick="attaque()">Attaquer</button>
-        <p>Points d'attaque de l'attaque précédente : <span id="points_attaque"></span></p>
-    </div>
-    <div>
-        <img src="icons/Large/soldier.png">
-        <p>Points de défense : <span id="points_soldat"><%=tuileSoldat.getSoldat().getPoints_defence()%></span></p>
-    </div>
+<div>
+    <%if (tuileAttaque.getSoldat() != null){%>
+    <img src="icons/Large/soldier.png">
+    <%}else if (tuileAttaque.getElement()!=null && tuileAttaque.getElement() instanceof Ville){%>
+    <img src="icons/Large/city.png">
+    <%}%>
+    <p>Points de défense : <span id="points_ville"><%=(tuileAttaque.getSoldat()!=null ? tuileAttaque.getSoldat().getPoints_defence() : (tuileAttaque.getElement()!=null && tuileAttaque.getElement() instanceof Ville ? ((Ville)tuileAttaque.getElement()).getPoints_defense() : 0 ) )%></span></p>
+</div>
+<div>
+<button onclick="attaque()">Attaquer</button>
+    <p>Points d'attaque de l'attaque précédente : <span id="points_attaque"></span></p>
+</div>
+<div>
+    <img src="icons/Large/soldier.png">
+    <p>Points de défense : <span id="points_soldat"><%=tuileSoldat.getSoldat().getPoints_defence()%></span></p>
+</div>
 
-<%}%>
 <script>
     var soldatPoints = <%=tuileSoldat.getSoldat().getPoints_defence()%>;
-    var attaquePoints = <%=((Ville)tuileAttaque.getElement()).getPoints_defense()%>;
+    var attaquePoints = <%=(tuileAttaque.getSoldat()!=null ? tuileAttaque.getSoldat().getPoints_defence() : (tuileAttaque.getElement()!=null && tuileAttaque.getElement() instanceof Ville ? ((Ville)tuileAttaque.getElement()).getPoints_defense() : 0 ) )%>;
     var uniteAttaque = true; //true si le soldat attaque la ville, false si la ville attaque le soldat
     function attaque(){
         var pointsAttaque =  Math.floor(Math.random() * 6) + 1
