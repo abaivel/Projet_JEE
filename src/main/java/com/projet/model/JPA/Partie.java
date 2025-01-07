@@ -2,7 +2,7 @@ package com.projet.model.JPA;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "partie")
@@ -10,8 +10,8 @@ public class Partie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPartie;
-    private LocalDate dateDebut;
-    private LocalDate dateFin;
+    private Date dateDebut;
+    private Date dateFin;
 
     public void setIdPartie(Long id) {
         this.idPartie = id;
@@ -21,19 +21,19 @@ public class Partie {
         return idPartie;
     }
 
-    public LocalDate getDateDebut() {
+    public Date getDateDebut() {
         return dateDebut;
     }
 
-    public void setDateDebut(LocalDate dateDebut) {
+    public void setDateDebut(Date dateDebut) {
         this.dateDebut = dateDebut;
     }
 
-    public LocalDate getDateFin() {
+    public Date getDateFin() {
         return dateFin;
     }
 
-    public void setDateFin(LocalDate dateFin) {
+    public void setDateFin(Date dateFin) {
         this.dateFin = dateFin;
     }
 }

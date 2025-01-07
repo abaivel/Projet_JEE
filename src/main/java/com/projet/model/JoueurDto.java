@@ -7,26 +7,30 @@ import java.util.List;
 
 public class JoueurDto {
     private String login;
-    private int score;
+    //private int score;
+    private int nbCombatGagne;
+    private int nbCombatPerdu;
     private int points_production;
     private List<Soldat> soldats;
     private List<Ville> villes;
 
     public JoueurDto(String login) {
         this.login = login;
-        this.score = 0;
+        //this.score = 0;
+        nbCombatGagne = 0;
+        nbCombatPerdu = 0;
         this.points_production = 0;
         this.soldats = new ArrayList<Soldat>();
         this.villes = new ArrayList<>();
     }
 
     public int getScore() {
-        return score;
+        return nbCombatGagne * 5 - nbCombatPerdu*6 + villes.size()*10;
     }
 
-    public void setScore(int score) {
+    /*public void setScore(int score) {
         this.score = score;
-    }
+    }*/
 
     public int getPoints_production() {
         return points_production;
@@ -74,5 +78,21 @@ public class JoueurDto {
         for (Soldat soldat : soldats) {
             soldat.setCanPlay(true);
         }
+    }
+
+    public int getNbCombatGagne() {
+        return nbCombatGagne;
+    }
+
+    public void setNbCombatGagne(int nbCombatGagne) {
+        this.nbCombatGagne = nbCombatGagne;
+    }
+
+    public int getNbCombatPerdu() {
+        return nbCombatPerdu;
+    }
+
+    public void setNbCombatPerdu(int nbCombatPerdu) {
+        this.nbCombatPerdu = nbCombatPerdu;
     }
 }

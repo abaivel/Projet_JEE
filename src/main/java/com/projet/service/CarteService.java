@@ -87,11 +87,13 @@ public class CarteService {
         tuileSoldat.getSoldat().setPoints_defence(pointsSoldat);
         if (tuileSoldat.getSoldat().getPoints_defence() <=0){
             tuileSoldat.setSoldat(null);
+            joueur.setNbCombatPerdu(joueur.getNbCombatPerdu()+1);
         }
         if (tuileAttaque.getSoldat() != null){
             tuileAttaque.getSoldat().setPoints_defence(pointsAttaque);
             if (tuileAttaque.getSoldat().getPoints_defence() <=0) {
                 tuileAttaque.setSoldat(null);
+                joueur.setNbCombatGagne(joueur.getNbCombatGagne()+1);
                 return moveTuile(tuileSoldat.getX(), tuileSoldat.getY(), tuileAttaque.getX(), tuileAttaque.getY(), joueur.getLogin());
             }
         }
@@ -99,6 +101,7 @@ public class CarteService {
             ((Ville) tuileAttaque.getElement()).setPoints_defense(pointsAttaque);
             if (((Ville) tuileAttaque.getElement()).getPoints_defense()<=0){
                 ((Ville) tuileAttaque.getElement()).setProprietaire(joueur);
+                joueur.setNbCombatGagne(joueur.getNbCombatGagne()+1);
                 return moveTuile(tuileSoldat.getX(), tuileSoldat.getY(), tuileAttaque.getX(), tuileAttaque.getY(), joueur.getLogin());
             }
         }

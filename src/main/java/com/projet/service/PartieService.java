@@ -7,11 +7,7 @@ import com.projet.model.JoueurDto;
 import com.projet.util.PersistenceManager;
 import jakarta.persistence.EntityManager;
 
-import java.time.LocalDate;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PartieService {
     public static Partie getPartieActive(){
@@ -24,7 +20,7 @@ public class PartieService {
             List<Partie> parties = em.createQuery(query, Partie.class).getResultList();
             if (parties==null || parties.isEmpty()){
                 Partie newPartie = new Partie();
-                newPartie.setDateDebut(LocalDate.now());
+                newPartie.setDateDebut(new Date());
                 em.persist(newPartie);
                 em.getTransaction().commit();
                 partie = newPartie;
@@ -113,13 +109,17 @@ public class PartieService {
         EntityManager em = PersistenceManager.getEntityManager();
         Partie partieActive = PartieService.getPartieActive();
         em.getTransaction().begin();
-        em.find(Partie.class,partieActive.getIdPartie()).setDateFin(LocalDate.now());
-        em.getTransaction().commit();
+        em.find(Partie.class,partieActive.getIdPartie()).setDateFin(new Date());
         String query = "select jp from JoueurPartie jp where jp.partie.idPartie=:idPartie";
         List<JoueurPartie> joueurParties = em.createQuery(query, JoueurPartie.class).setParameter("idPartie", partieActive.getIdPartie()).getResultList();
         for (JoueurPartie jp : joueurParties){
+            JoueurDto j = CarteService.getJoueur(jp.getJoueur().getLogin());
+            if (j!=null) {
+                em.find(JoueurPartie.class, jp.getIdJoueurPartie()).setScore(j.getScore());
+            }
             dicoScores.put(jp.getJoueur().getLogin(),jp.getScore());
         }
+        em.getTransaction().commit();
         return dicoScores;
     }
 
