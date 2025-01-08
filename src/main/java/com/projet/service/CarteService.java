@@ -7,6 +7,7 @@ import com.projet.model.JoueurDto;
 import com.projet.model.PartieDto;
 import com.projet.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CarteService {
@@ -79,6 +80,7 @@ public class CarteService {
 
     public static void generateNewPartie(){
         PartieDto p = PartieDto.getPartieDto();
+        p.setJoueurs(new ArrayList<>());
         p.setCarte(new Carte());
     }
 

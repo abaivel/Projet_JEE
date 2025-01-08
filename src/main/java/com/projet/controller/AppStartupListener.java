@@ -9,6 +9,6 @@ import jakarta.servlet.annotation.WebListener;
 public class AppStartupListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        PartieService.finirPartie();
+        (new PartieService()).finirPartie();
     }
 }

@@ -63,7 +63,7 @@ public class Carte {
                 xRandom = (int) (Math.random() * 10);
                 yRandom = (int) (Math.random() * 10);
             }while (!IsTuileEmpty(xRandom, yRandom));
-            grille[xRandom][yRandom].setElement(new Ville(xRandom, yRandom, (int) (Math.random() * 10)+5, (int) (Math.random() * 10)));
+            grille[xRandom][yRandom].setElement(new Ville(xRandom, yRandom, (int) (Math.random() * 10)+5, (int) (Math.random() * 10)+1));
         }
     }
 
