@@ -31,6 +31,17 @@
     .table-recap tr:nth-child(even) {
       background-color: #f2f2f2; /* Fond alternatif pour les lignes */
     }
+
+    .other-button{
+      border-radius: 15px;
+      padding: 5px;
+      font-size: 15px;
+    }
+
+    .other-button:hover {
+      background-color: #dcd9d4;
+    }
+
   </style>
 </head>
 <body>
@@ -70,7 +81,9 @@
     </tbody>
   </table>
   <div style="text-align: center; margin-top: 20px;">
-    <a href="${pageContext.request.contextPath}/accueil">Accueil</a>
+    <a href="${pageContext.request.contextPath}/accueil">
+      <button class="other-button">Retour à l'accueil</button>
+    </a>
   </div>
 </div>
 </body>

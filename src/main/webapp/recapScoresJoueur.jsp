@@ -31,6 +31,17 @@
     .table-recap tr:nth-child(even) {
       background-color: #f2f2f2; /* Fond alternatif pour les lignes */
     }
+
+    .other-button{
+      border-radius: 15px;
+      padding: 5px;
+      font-size: 15px;
+    }
+
+    .other-button:hover {
+      background-color: #dcd9d4;
+    }
+
   </style>
 </head>
 <body>

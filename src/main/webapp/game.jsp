@@ -14,6 +14,36 @@
 <head>
     <title>Jeu</title>
     <link href="css/style.css" rel="stylesheet">
+    <style>
+        .other-button-disabled {
+            width: 100%;
+            font-size: 15px;
+            border-radius: 15px;
+            padding: 2px;
+            background-color: #ffffff;
+            border-color: #000000;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .button-deplacement-disabled {
+            width: 100%;
+            font-size: 15px;
+            border-radius: 15px;
+            padding: 2px;
+            background-color: #ffffff;
+            border-color: #000000;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .other-button:hover {
+            background-color: #dcd9d4;
+        }
+
+        .button-deplacement:hover {
+            background-color: #dcd9d4;
+        }
+
+    </style>
 </head>
 <body>
 <%
@@ -22,7 +52,7 @@
     JoueurDto joueurTour = (JoueurDto) request.getAttribute("joueurTour");
     List<JoueurDto> joueurs = (List<JoueurDto>) request.getAttribute("joueurs");
 %>
-<button type="button" name="back" onclick="history.back()">Retour</button>
+<button class="other-button" type="button" name="back" onclick="history.back()">Retour</button>
 <div style="display: flex;gap: 5%;">
     <div>
         <table id = "map">
@@ -79,11 +109,11 @@
                     <button disabled onclick="allerHaut('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-haut"><img src="icons/fleche_haut.png"></button>
                     <button disabled onclick="allerGauche('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-gauche"><img src="icons/fleche_gauche.png"></button>
                     <button disabled onclick="allerDroite('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-droite"><img src="icons/fleche_droite.png"></button>
-                    <button disabled onclick="allerBas('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-bas"><img src="icons/fleche_bas.png"></button>
+                    <button disabled onclick="allerBas('<%=joueurConnecte.getLogin()%>')" class="button-deplacement-disabled button-deplacement-bas"><img src="icons/fleche_bas.png"></button>
                 </div>
                 <div class="div-others-buttons">
-                    <button disabled class="other-button">Se soigner</button>
-                    <button disabled class="other-button">finir le tour</button>
+                    <button disabled class="other-button-disabled">Se soigner</button>
+                    <button disabled class="other-button-disabled">Fourrager</button>
                 </div>
             <%}%>
         </div>
@@ -115,13 +145,13 @@
         <p>Points de production : <%=joueurConnecte.getPoints_production()%></p>
         <form>
             <%if (joueurConnecte.getPoints_production()>=15){%>
-            <button onclick="recruter('<%=joueurConnecte.getLogin()%>')"> Recruter un soldat : 15 points de production </button>
+            <button class="other-button" onclick="recruter('<%=joueurConnecte.getLogin()%>')"> Recruter un soldat : 15 points de production </button>
             <%}else{%>
-            <input disabled type="submit" value="Recruter un soldat : 15 points de production">
+            <input class="other-button-disabled" disabled type="submit" value="Recruter un soldat : 15 points de production">
             <%}%>
         </form>
         <form method="post" action="${pageContext.request.contextPath}/finPartie">
-            <input type="submit" value="Finir la partie">
+            <input class="other-button" type="submit" value="Finir la partie">
         </form>
     </div>
 </div>
