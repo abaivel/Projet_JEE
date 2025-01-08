@@ -1,5 +1,7 @@
 <%@ page import="com.projet.model.JPA.JoueurPartie" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Locale" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -65,8 +67,8 @@
     <tr>
       <td><%= rank++ %></td>
       <td>Partie <%= joueurPartie.getPartie().getIdPartie() %></td>
-      <td><%= joueurPartie.getPartie().getDateDebut() %></td>
-      <td><%= joueurPartie.getPartie().getDateFin() %></td>
+      <td><%= new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.FRANCE).format(joueurPartie.getPartie().getDateDebut()) %></td>
+      <td><%= joueurPartie.getPartie().getDateFin()!=null ? new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.FRANCE).format(joueurPartie.getPartie().getDateFin()) : "-" %></td>
       <td><%= joueurPartie.getScore() %></td>
     </tr>
     <%

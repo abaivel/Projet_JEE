@@ -55,7 +55,7 @@
 <button class="other-button" type="button" name="back" onclick="history.back()">Retour</button>
 <div style="display: flex;gap: 5%;">
     <div>
-        <table>
+        <table id = "map">
             <%for (int i=0;i<10;i++){%>
             <tr>
                 <%for (int j=0;j<10;j++){%>
@@ -79,7 +79,7 @@
                         <img style="border:3px solid grey" src="icons/Small/soldier.png"  alt="soldat indé">
                         <%}
                         else if (grille[i][j].getSoldat().getProprietaire().getLogin().equals(joueurConnecte.getLogin())){%>
-                        <img class="img-soldat-alie" style="border:3px solid green" src="icons/Small/soldier.png"  alt="soldat alié" onclick="clicSoldat(this, <%=i%>, <%=j%>)">
+                        <img class="img-soldat-alie" style="border:3px solid green" src="icons/Small/soldier.png"  alt="soldat alié" <%if (grille[i][j].getSoldat().CanPlay()){%> onclick="clicSoldat(this, <%=i%>, <%=j%>)<%}%>">
                         <%}else{%>
                         <img style="border:3px solid red" src="icons/Small/soldier.png"  alt="soldat ennemi">
                         <%}
@@ -98,9 +98,10 @@
                     <button onclick="allerDroite('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-droite"><img src="icons/fleche_droite.png"></button>
                     <button onclick="allerBas('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-bas"><img src="icons/fleche_bas.png"></button>
                 </div>
-                <div class="div-others-buttons">
-                    <button class="other-button">Se soigner</button>
-                    <button class="other-button">Fourrager</button>
+                <div class="div-others-buttons" id="other-button-div">
+                    <button onclick="seSoigner('<%=joueurConnecte.getLogin()%>')" class="other-button">Se soigner</button>
+                    <button onclick="passerTour('<%=joueurConnecte.getLogin()%>')" class="other-button">finir le tour</button>
+                    <button onclick="fourrager('<%=joueurConnecte.getLogin()%>')" style="display: none;" class="other-button" id="fourrage">Fourrager</button>
                 </div>
                 <p style="margin: 0 0 0 10px;" id="nb-points-defense"></p>
             <%}else{%>
@@ -121,8 +122,19 @@
         <p>Joueurs :</p>
         <ul>
             <%for (JoueurDto j : joueurs){%>
+            <%if (j.getLogin().equals(joueurConnecte.getLogin())){%>
+                <%if (joueurTour.getLogin().equals(j.getLogin())){%>
+                <li class ="name-tour"><%=j.getLogin()%> (vous)</li>
+                <%}else{%>
+                <li><%=j.getLogin()%> (vous)</li>
+            <%}}else{%>
+            <%if (joueurTour.getLogin().equals(j.getLogin())){%>
+            <li class ="name-tour"><%=j.getLogin()%></li>
+            <%}else{%>
                 <li><%=j.getLogin()%></li>
-            <%}%>
+            <%}
+            }
+            }%>
         </ul>
         <%if (joueurTour.getLogin().equals(joueurConnecte.getLogin())){%>
             <p>C'est votre tour</p>
@@ -133,7 +145,7 @@
         <p>Points de production : <%=joueurConnecte.getPoints_production()%></p>
         <form>
             <%if (joueurConnecte.getPoints_production()>=15){%>
-            <input class="other-button" type="submit" value="Recruter un soldat : 15 points de production">
+            <button class="other-button" onclick="recruter('<%=joueurConnecte.getLogin()%>')"> Recruter un soldat : 15 points de production </button>
             <%}else{%>
             <input class="other-button-disabled" disabled type="submit" value="Recruter un soldat : 15 points de production">
             <%}%>
@@ -166,49 +178,24 @@
         console.log(y)
         const text_points_defense = document.getElementById("nb-points-defense");
         text_points_defense.innerHTML = "Points de défense : " + grille[parseInt(x)][parseInt(y)].toString()
+
+        //faire apparaitre les boutons
+        var button= document.getElementById("fourrage");
+        const cell = getCell("map",x,y).querySelectorAll("img")
+        if (Array.from(cell).some(img => img.getAttribute("alt") === "foret")){ //tester si la case est une forêt, si oui, on affiche le bouton
+            button.style.display = 'block';
+        }else{
+            button.style.display = 'none';
+        }
+
     }
-    function allerGauche(login) {
-        const data = new URLSearchParams({
-            x_old: img_selectionne_x,
-            y_old: img_selectionne_y,
-            x_new: img_selectionne_x,
-            y_new: img_selectionne_y-1,
-            login: login
-        });
-        callMoveServlet(data)
+    function getCell(tableId, rowIndex, colIndex) {
+        const table = document.getElementById(tableId);
+        const row = table.rows[rowIndex];
+        return row ? row.cells[colIndex] : null;
     }
-    function allerDroite(login) {
-        const data = new URLSearchParams({
-            x_old: img_selectionne_x,
-            y_old: img_selectionne_y,
-            x_new: img_selectionne_x,
-            y_new: img_selectionne_y+1,
-            login: login
-        });
-        callMoveServlet(data)
-    }
-    function allerHaut(login) {
-        const data = new URLSearchParams({
-            x_old: img_selectionne_x,
-            y_old: img_selectionne_y,
-            x_new: img_selectionne_x-1,
-            y_new: img_selectionne_y,
-            login: login
-        });
-        callMoveServlet(data)
-    }
-    function allerBas(login) {
-        const data = new URLSearchParams({
-            x_old: img_selectionne_x,
-            y_old: img_selectionne_y,
-            x_new: img_selectionne_x+1,
-            y_new: img_selectionne_y,
-            login: login
-        });
-        callMoveServlet(data)
-    }
-    function callMoveServlet(data){
-        const apiUrl = '${pageContext.request.contextPath}/move';
+    function callServlet(data, servlet){
+        const apiUrl = '${pageContext.request.contextPath}'+servlet;
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -219,23 +206,105 @@
 
         fetch(apiUrl, requestOptions)
             .then(response => {
-                if (!response.ok) {
+                if (response.status === 301){
+                    return response.json();
+                }else if (!response.ok) {
                     throw new Error('Network response was not ok');
                     //afficher une erreur sur la page
-                }else {
+                }
+                else{
                     location.reload();
+                }
+            })
+            .then(data => {
+                if (data.redirect) {
+                    window.location.href = data.redirect; // Redirection vers l'URL renvoyée
                 }
             })
             .catch(err => {
                 console.log(err.message);
             });
+
+    }
+    function fourrager(login) {
+        const data = new URLSearchParams({
+            x: img_selectionne_x,
+            y: img_selectionne_y,
+            login: login
+        });
+        callServlet(data, "/fourrage");
+    }
+
+
+    function allerGauche(login) {
+        const data = new URLSearchParams({
+            x_old: img_selectionne_x,
+            y_old: img_selectionne_y,
+            x_new: img_selectionne_x,
+            y_new: img_selectionne_y-1,
+            login: login
+        });
+        callServlet(data, "/move");
+    }
+    function allerDroite(login) {
+        const data = new URLSearchParams({
+            x_old: img_selectionne_x,
+            y_old: img_selectionne_y,
+            x_new: img_selectionne_x,
+            y_new: img_selectionne_y+1,
+            login: login
+        });
+        callServlet(data, "/move");
+    }
+    function allerHaut(login) {
+        const data = new URLSearchParams({
+            x_old: img_selectionne_x,
+            y_old: img_selectionne_y,
+            x_new: img_selectionne_x-1,
+            y_new: img_selectionne_y,
+            login: login
+        });
+        callServlet(data, "/move");
+    }
+    function allerBas(login) {
+        const data = new URLSearchParams({
+            x_old: img_selectionne_x,
+            y_old: img_selectionne_y,
+            x_new: img_selectionne_x+1,
+            y_new: img_selectionne_y,
+            login: login
+        });
+        callServlet(data, "/move");
+    }
+
+    function seSoigner(login){
+        const data = new URLSearchParams({
+            x: img_selectionne_x,
+            y: img_selectionne_y,
+            login: login
+        });
+        callServlet(data, "/soigner");
+    }
+
+    function passerTour(login){
+        const data = new URLSearchParams({
+            login: login
+        });
+        callServlet(data, "/pass");
+    }
+    function recruter(login){
+        const data = new URLSearchParams({
+            login: login
+        });
+        callServlet(data, "/recruter");
     }
     function pollServer() {
+        <%if (!joueurTour.getLogin().equals(joueurConnecte.getLogin())){%>
         location.reload()
+        <%}%>
     }
     // Polling chaque 5 secondes
-    //setInterval(pollServer, 5000);
-
+    setInterval(pollServer, 5000);
 </script>
 </body>
 </html>

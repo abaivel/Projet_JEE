@@ -27,7 +27,17 @@ public class Carte {
         this.grille = grille;
     }
 
+    public void emptyGrille() {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                grille[i][j].setElement(null);
+                grille[i][j].setSoldat(null);
+            }
+        }
+    }
+
     public void setGrilleAleatoire(){
+        emptyGrille();
         for (int i = 0; i<10;i++){
             int xRandom = 0;
             int yRandom = 0;
@@ -53,15 +63,18 @@ public class Carte {
                 xRandom = (int) (Math.random() * 10);
                 yRandom = (int) (Math.random() * 10);
             }while (!IsTuileEmpty(xRandom, yRandom));
-            grille[xRandom][yRandom].setElement(new Ville(xRandom, yRandom, (int) (Math.random() * 10)));
+            grille[xRandom][yRandom].setElement(new Ville(xRandom, yRandom, (int) (Math.random() * 10)+5, (int) (Math.random() * 10)+1));
         }
     }
 
     public boolean IsTuileEmpty(int x, int y){
         return grille[x][y].getElement()==null && grille[x][y].getSoldat()==null;
     }
+    public boolean NoSoldat(int x, int y){
+        return grille[x][y].getSoldat()==null && !(grille[x][y].getElement() instanceof Montagne);
+    }
 
-    public boolean IsTuileOccupable(int x, int y, String login){
+    public boolean IsTuileOccupable2(int x, int y, String login){
         Tuile t = grille[x][y];
         if (t.getSoldat() != null){
             return false;
@@ -78,6 +91,40 @@ public class Carte {
         }
         return false;
     }
+    public boolean IsTuileOccupable(int x, int y, String login){
+        Tuile t = grille[x][y];
+        if (t.getSoldat() != null) {
+            if (t.getSoldat().getProprietaire().getLogin().equals(login)){
+                return false;
+            }
+        }
+        if (t.getElement() != null) {
+            if (t.getElement() instanceof Montagne){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public Tuile IsThereEnnemiVille(int x, int y, String login){
+        if (grille[x][y].getElement()!=null){
+            if (grille[x][y].getElement() instanceof Ville){
+                if (((Ville) grille[x][y].getElement()).getProprietaire()==null || !((Ville) grille[x][y].getElement()).getProprietaire().getLogin().equals(login)){
+                    return grille[x][y];
+                }
+            }
+        }
+        return null;
+    }
+
+    public Tuile IsThereSoldatEnnemi(int x, int y, String login){
+        if (grille[x][y].getSoldat()!=null){
+            if (!grille[x][y].getSoldat().getProprietaire().getLogin().equals(login)){
+                return grille[x][y];
+            }
+        }
+        return null;
+    }
 
     public Tuile getTuile(int x, int y) {
         return grille[x][y];
@@ -89,4 +136,30 @@ public class Carte {
     public void setTuileSoldat(int x, int y, Soldat soldat) {
         grille[x][y].setSoldat(soldat);
     }
+    public boolean addSoldat(Soldat soldat) {
+        int tailleX = grille.length;
+        int tailleY = grille[0].length;
+
+        // Choisir une case initiale au hasard
+        int startX = (int) (Math.random() * tailleX);
+        int startY = (int) (Math.random() * tailleY);
+
+        // Parcourir toutes les cases en commençant par la case aléatoire
+        for (int i = 0; i < tailleX; i++) {
+            for (int j = 0; j < tailleY; j++) {
+                int x = (startX + i) % tailleX; // Gérer le débordement pour revenir au début
+                int y = (startY + j) % tailleY;
+
+                if (NoSoldat(x, y)) {
+                    grille[x][y].setSoldat(soldat);
+                    soldat.setX(x);
+                    soldat.setY(y);
+                    return true; // Soldat placé avec succès
+                }
+            }
+        }
+
+        return false;
+    }
+
 }

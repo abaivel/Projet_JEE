@@ -5,10 +5,25 @@ public class Soldat {
     private int y;
     private int points_defence;
     private JoueurDto proprietaire;
+    private final int PVMax;
+
+    public boolean CanPlay() {
+        return canPlay;
+    }
+
+    public void setCanPlay(boolean canPlay) {
+        this.canPlay = canPlay;
+    }
+
+    private boolean canPlay;
 
     public Soldat(int x, int y, int points_defence, JoueurDto proprietaire) {
         this.points_defence = points_defence;
         this.proprietaire = proprietaire;
+        proprietaire.addSoldat(this);
+        this.PVMax = points_defence;
+        this.canPlay = true;
+        proprietaire.addSoldat(this);
     }
 
     public JoueurDto getProprietaire() {
@@ -17,6 +32,7 @@ public class Soldat {
 
     public void setProprietaire(JoueurDto proprietaire) {
         this.proprietaire = proprietaire;
+        proprietaire.addSoldat(this);
     }
 
     public int getPoints_defence() {
@@ -24,7 +40,11 @@ public class Soldat {
     }
 
     public void setPoints_defence(int points_defence) {
-        this.points_defence = points_defence;
+        if(points_defence <= this.PVMax) {
+            this.points_defence = points_defence;
+        }else{
+            this.points_defence = this.PVMax;
+        }
     }
 
     public int getX() {
@@ -42,4 +62,5 @@ public class Soldat {
     public void setY(int y) {
         this.y = y;
     }
+
 }

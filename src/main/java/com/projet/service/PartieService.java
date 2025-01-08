@@ -1,87 +1,44 @@
 package com.projet.service;
 
+import com.projet.model.DAO.JoueurPartieDAO;
+import com.projet.model.DAO.PartieDAO;
 import com.projet.model.JPA.Joueur;
 import com.projet.model.JPA.JoueurPartie;
 import com.projet.model.JPA.Partie;
 import com.projet.model.JoueurDto;
-import com.projet.util.PersistenceManager;
-import jakarta.persistence.EntityManager;
 
-import java.time.LocalDate;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PartieService {
-    public static Partie getPartieActive(){
-        EntityManager em = PersistenceManager.getEntityManager();
+    private final PartieDAO partieDAO;
+    private final JoueurPartieDAO joueurPartieDAO;
+
+    public PartieService() {
+        this.partieDAO = new PartieDAO();
+        this.joueurPartieDAO = new JoueurPartieDAO();
+    }
+
+    public Partie getPartieActive(){
         Partie partie = null;
-        try {
-            em.getTransaction().begin();
-            String query = "select p from Partie p where p.dateFin IS NULL";
-
-            List<Partie> parties = em.createQuery(query, Partie.class).getResultList();
-            if (parties==null || parties.isEmpty()){
-                Partie newPartie = new Partie();
-                newPartie.setDateDebut(LocalDate.now());
-                em.persist(newPartie);
-                em.getTransaction().commit();
-                partie = newPartie;
-            }else {
-                partie = parties.get(0);
-            }
-
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            em.close();
+        partie = partieDAO.getPartieActive();
+        if (partie == null) {
+            partie = partieDAO.addPartie();
+            CarteService.generateNewPartie();
         }
         return partie;
     }
 
-    public static boolean IsJoueurInPartie(Partie partie, Joueur joueur){
-        EntityManager em = PersistenceManager.getEntityManager();
-        boolean joueurInPartie = false;
-        try {
-            em.getTransaction().begin();
-            String query = "select jp from JoueurPartie jp where jp.partie.idPartie=:idPartie and jp.joueur.idJoueur=:idJoueur";
-
-            List<JoueurPartie> joueurParties = em.createQuery(query, JoueurPartie.class).setParameter("idPartie", partie.getIdPartie()).setParameter("idJoueur", joueur.getIdJoueur()).getResultList();
-            joueurInPartie = !joueurParties.isEmpty();
-
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            em.close();
-        }
-        return joueurInPartie;
+    public boolean IsJoueurInPartie(Partie partie, Joueur joueur){
+        return joueurPartieDAO.getJoueurPartieByPartieIdAndJoueurId(partie.getIdPartie(), joueur.getIdJoueur())!=null;
     }
 
-    public static void addJoueurToPartie(Partie partie, Joueur joueur){
-        EntityManager em = PersistenceManager.getEntityManager();
-        try {
-            em.getTransaction().begin();
-            JoueurPartie joueurPartie = new JoueurPartie();
-            joueurPartie.setJoueur(joueur);
-            joueurPartie.setPartie(partie);
-            joueurPartie.setScore(0);
-            em.persist(joueurPartie);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            em.close();
-        }
+    public void addJoueurToPartie(Partie partie, Joueur joueur) {
+        joueurPartieDAO.addJoueurPartie(partie, joueur);
     }
-
-    public static JoueurDto addJoueurToPartieActiveIfNotInPartie(Joueur joueur){
-        Partie partieActive = PartieService.getPartieActive();
-        if (!PartieService.IsJoueurInPartie(partieActive, joueur)){
-            PartieService.addJoueurToPartie(partieActive, joueur);
+    public JoueurDto addJoueurToPartieActiveIfNotInPartie(Joueur joueur){
+        Partie partieActive = getPartieActive();
+        if (!IsJoueurInPartie(partieActive, joueur)){
+            addJoueurToPartie(partieActive, joueur);
             JoueurDto joueurDto = new JoueurDto(joueur.getLogin());
             CarteService.addJoueur(joueurDto);
             return joueurDto;
@@ -89,29 +46,32 @@ public class PartieService {
         return CarteService.getJoueur(joueur.getLogin());
     }
 
-    public static void generateNewPartieDto(){
-        EntityManager em = PersistenceManager.getEntityManager();
-        Partie partieActive = PartieService.getPartieActive();
+    public void generateNewPartieDto(){
+        CarteService.generateNewPartie();
+        Partie partieActive = getPartieActive();
         if (partieActive != null){
-            String query = "select jp from JoueurPartie jp where jp.partie.idPartie=:idPartie";
-            List<JoueurPartie> joueurParties = em.createQuery(query, JoueurPartie.class).setParameter("idPartie", partieActive.getIdPartie()).getResultList();
-            for (JoueurPartie jp : joueurParties){
-                Joueur j = jp.getJoueur();
-                JoueurDto joueurDto = new JoueurDto(j.getLogin());
-                CarteService.addJoueur(joueurDto);
-                jp.setScore(0);
+            List<JoueurPartie> joueurParties = joueurPartieDAO.getJoueurPartieByPartieId(partieActive.getIdPartie());
+            if (joueurParties!=null) {
+                for (JoueurPartie jp : joueurParties) {
+                    Joueur j = jp.getJoueur();
+                    JoueurDto joueurDto = new JoueurDto(j.getLogin());
+                    CarteService.addJoueur(joueurDto);
+                    jp.setScore(0);
+                }
             }
         }
     }
 
-    public static Map<String, Integer> finirPartie(){
+    public Map<String, Integer> finirPartie(){
         Map<String, Integer> dicoScores = new Hashtable<String, Integer>();
-        EntityManager em = PersistenceManager.getEntityManager();
-        Partie partieActive = PartieService.getPartieActive();
-        partieActive.setDateFin(LocalDate.now());
-        String query = "select jp from JoueurPartie jp where jp.partie.idPartie=:idPartie";
-        List<JoueurPartie> joueurParties = em.createQuery(query, JoueurPartie.class).setParameter("idPartie", partieActive.getIdPartie()).getResultList();
+        Partie partieActive = getPartieActive();
+        partieDAO.finishPartie(partieActive);
+        List<JoueurPartie> joueurParties = joueurPartieDAO.getJoueurPartieByPartieId(partieActive.getIdPartie());
         for (JoueurPartie jp : joueurParties){
+            JoueurDto j = CarteService.getJoueur(jp.getJoueur().getLogin());
+            if (j!=null) {
+                joueurPartieDAO.setScore(jp.getIdJoueurPartie(), j.getScore());
+            }
             dicoScores.put(jp.getJoueur().getLogin(),jp.getScore());
         }
         return dicoScores;

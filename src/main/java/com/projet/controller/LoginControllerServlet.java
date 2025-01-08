@@ -36,7 +36,7 @@ public class LoginControllerServlet extends HttpServlet {
         if (login == null || mdp == null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         } else {
-            JoueurDto res = JoueurService.testLogin(login, mdp);
+            JoueurDto res = (new JoueurService()).testLogin(login, mdp);
 
             if (res != null) {
                 // Ajouter le joueur connecté à la session
