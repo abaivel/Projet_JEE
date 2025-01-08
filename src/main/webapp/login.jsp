@@ -3,6 +3,11 @@
 <html style="width: 100%; height: 100%; margin: 0; overflow: hidden">
 <head>
     <title>Connexion</title>
+    <style>
+        .other-button:hover {
+            background-color: #dcd9d4 !important;
+        }
+    </style>
 </head>
 <body style="background-image: url(images/fond_ecran_connexion.jpeg); background-repeat: no-repeat; background-size: cover;width: 100%; height: 100%; margin: 0; overflow: hidden">
 <div style="background-color: #ffffff8a;width: 100%; height: 100%;margin: 0;align-content: center;">
@@ -21,7 +26,7 @@
                 <input type="password" id="mdp" name="mdp" required style="width: 97%;border-radius: 15px;height: 20px;padding: 2px 5px;font-size: 15px;border-color: #000000;font-family: 'Times New Roman',serif;">
                 <br>
                 <br>
-                <input type="submit" value="Se connecter" style="margin:0% 35%;font-size: 15px;border-radius: 15px;padding: 2px;width: 30%;background-color: #ffffff;border-color: #000000;font-family: 'Times New Roman',serif;">
+                <input class="other-button" type="submit" value="Se connecter" style="margin:0% 35%;font-size: 15px;border-radius: 15px;padding: 2px;width: 30%;background-color: #ffffff;border-color: #000000;font-family: 'Times New Roman',serif;">
                 <% if (request.getAttribute("erreur")!=null && (boolean)request.getAttribute("erreur")) { %>
                     <p style="color: red">Le login est déjà utilisé ou le mot de passe est incorrect</p>
                 <% } %>
