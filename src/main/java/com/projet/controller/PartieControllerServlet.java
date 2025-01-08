@@ -15,8 +15,9 @@ import java.util.Map;
 public class PartieControllerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Map<String, Integer> dicoScores =  PartieService.finirPartie();
-        PartieService.generateNewPartieDto();
+        PartieService partieService = new PartieService();
+        Map<String, Integer> dicoScores =  partieService.finirPartie();
+        partieService.generateNewPartieDto();
         req.setAttribute("scores", dicoScores);
         this.getServletContext().getRequestDispatcher("/recapScores.jsp").forward(req, resp);
     }

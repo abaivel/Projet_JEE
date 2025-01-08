@@ -1,13 +1,6 @@
 <%@ page import="com.projet.model.JoueurDto" %>
 <%@ page import="com.projet.model.Tuile" %>
 <%@ page import="com.projet.model.Element.Ville" %>
-<%@ page import="java.util.Random" %><%--
-  Created by IntelliJ IDEA.
-  User: CYTech Student
-  Date: 24/12/2024
-  Time: 17:34
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>

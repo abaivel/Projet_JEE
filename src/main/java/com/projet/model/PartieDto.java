@@ -89,4 +89,8 @@ public class PartieDto {
     public void setJoueurTour(JoueurDto joueurTour) {
         this.joueurTour = joueurTour;
     }
+
+    public void setJoueurs(List<JoueurDto> joueurs) {
+        this.joueurs = joueurs;
+    }
 }
