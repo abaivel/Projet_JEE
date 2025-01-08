@@ -49,7 +49,7 @@
                         <img style="border:3px solid grey" src="icons/Small/soldier.png"  alt="soldat indé">
                         <%}
                         else if (grille[i][j].getSoldat().getProprietaire().getLogin().equals(joueurConnecte.getLogin())){%>
-                        <img class="img-soldat-alie" style="border:3px solid green" src="icons/Small/soldier.png"  alt="soldat alié" onclick="clicSoldat(this, <%=i%>, <%=j%>)">
+                        <img class="img-soldat-alie" style="border:3px solid green" src="icons/Small/soldier.png"  alt="soldat alié" <%if (grille[i][j].getSoldat().CanPlay()){%> onclick="clicSoldat(this, <%=i%>, <%=j%>)<%}%>">
                         <%}else{%>
                         <img style="border:3px solid red" src="icons/Small/soldier.png"  alt="soldat ennemi">
                         <%}
