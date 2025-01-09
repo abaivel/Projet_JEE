@@ -6,43 +6,7 @@
 <html>
 <head>
   <title>Récapitulatif des Scores Joueur</title>
-  <style>
-    /* Style spécifique pour le tableau de recapScores.jsp */
-    .table-recap {
-      width: 90%; /* Occupe 90% de la largeur de la page */
-      margin: 20px auto; /* Centré avec un espacement vertical */
-      font-size: 18px; /* Texte plus grand */
-      border-collapse: collapse; /* Réduire les bordures */
-      background-color: #f9f9f9; /* Fond doux */
-      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Ajouter une ombre */
-    }
-
-    .table-recap th, .table-recap td {
-      padding: 15px; /* Espacement interne des cellules */
-      text-align: left; /* Texte aligné à gauche */
-    }
-
-    .table-recap th {
-      background-color: #96937d; /* Couleur de fond pour les en-têtes */
-      color: white; /* Texte blanc */
-      text-transform: uppercase; /* Texte en majuscules */
-    }
-
-    .table-recap tr:nth-child(even) {
-      background-color: #f2f2f2; /* Fond alternatif pour les lignes */
-    }
-
-    .other-button{
-      border-radius: 15px;
-      padding: 5px;
-      font-size: 15px;
-    }
-
-    .other-button:hover {
-      background-color: #dcd9d4;
-    }
-
-  </style>
+  <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">

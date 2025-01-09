@@ -1,3 +1,31 @@
+.body-login{
+    background-image: url(../images/fond_ecran_connexion.jpeg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden
+}
+
+.fond-login{
+    background-color: #ffffff8a;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    align-content: center;
+}
+
+.container-login{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 15px;
+    background-color: white;
+    width: 30%;
+    margin: auto;
+    padding: 1%;
+}
+
+
 td div{
     width: 50px;
     height: 50px;
@@ -69,4 +97,82 @@ table {
     border-radius: 15px;
     padding: 5px;
     font-size: 15px;
+}
+
+.button-accueil {
+    width: 100%;
+    font-size: 15px;
+    border-radius: 15px;
+    padding: 2px;
+    background-color: #ffffff;
+    border-color: #000000;
+    font-family: 'Times New Roman', serif;
+}
+
+.button-accueil:hover {
+    background-color: #dcd9d4;
+}
+
+.other-button-disabled {
+    width: 100%;
+    font-size: 15px;
+    border-radius: 15px;
+    padding: 2px;
+    background-color: #ffffff;
+    border-color: #000000;
+    font-family: 'Times New Roman', serif;
+}
+
+.button-deplacement-disabled {
+    width: 100%;
+    font-size: 15px;
+    border-radius: 15px;
+    padding: 2px;
+    background-color: #ffffff;
+    border-color: #000000;
+    font-family: 'Times New Roman', serif;
+}
+
+.other-button:hover {
+    background-color: #dcd9d4 !important;
+}
+
+.button-deplacement:hover {
+    background-color: #dcd9d4;
+}
+
+
+/* Style spécifique pour le tableau de recapScores.jsp */
+.table-recap {
+    width: 90%; /* Occupe 90% de la largeur de la page */
+    margin: 20px auto; /* Centré avec un espacement vertical */
+    font-size: 18px; /* Texte plus grand */
+    border-collapse: collapse; /* Réduire les bordures */
+    background-color: #f9f9f9; /* Fond doux */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Ajouter une ombre */
+}
+
+.table-recap th, .table-recap td {
+    padding: 15px; /* Espacement interne des cellules */
+    text-align: left; /* Texte aligné à gauche */
+}
+
+.table-recap th {
+    background-color: #96937d; /* Couleur de fond pour les en-têtes */
+    color: white; /* Texte blanc */
+    text-transform: uppercase; /* Texte en majuscules */
+}
+
+.table-recap tr:nth-child(even) {
+    background-color: #f2f2f2; /* Fond alternatif pour les lignes */
+}
+
+.other-button{
+    border-radius: 15px;
+    padding: 5px;
+    font-size: 15px;
+}
+
+.other-button:hover {
+    background-color: #dcd9d4;
 }

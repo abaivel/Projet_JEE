@@ -3,17 +3,13 @@
 <html style="width: 100%; height: 100%; margin: 0; overflow: hidden">
 <head>
     <title>Connexion</title>
-    <style>
-        .other-button:hover {
-            background-color: #dcd9d4 !important;
-        }
-    </style>
+    <link href="css/style.css" rel="stylesheet">
 </head>
-<body style="background-image: url(images/fond_ecran_connexion.jpeg); background-repeat: no-repeat; background-size: cover;width: 100%; height: 100%; margin: 0; overflow: hidden">
-<div style="background-color: #ffffff8a;width: 100%; height: 100%;margin: 0;align-content: center;">
+<body class="body-login">
+<div class="fond-login">
     <div>
         <h1 style="text-align: center;margin: 0 0 20px 0;">Bienvenue sur ce jeu</h1>
-        <div style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;border-radius: 15px; background-color: white; width: 30%; margin: auto; padding: 1%;">
+        <div class="container-login">
             <h3 style="text-align: center;margin:0">Inscription/Connexion</h3>
             <form action="${pageContext.request.contextPath}/accueil" method="post">
                 <label for="login" style="font-size: 15px;">Login</label>

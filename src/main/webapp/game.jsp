@@ -14,36 +14,6 @@
 <head>
     <title>Jeu</title>
     <link href="css/style.css" rel="stylesheet">
-    <style>
-        .other-button-disabled {
-            width: 100%;
-            font-size: 15px;
-            border-radius: 15px;
-            padding: 2px;
-            background-color: #ffffff;
-            border-color: #000000;
-            font-family: 'Times New Roman', serif;
-        }
-
-        .button-deplacement-disabled {
-            width: 100%;
-            font-size: 15px;
-            border-radius: 15px;
-            padding: 2px;
-            background-color: #ffffff;
-            border-color: #000000;
-            font-family: 'Times New Roman', serif;
-        }
-
-        .other-button:hover {
-            background-color: #dcd9d4;
-        }
-
-        .button-deplacement:hover {
-            background-color: #dcd9d4;
-        }
-
-    </style>
 </head>
 <body>
 <%
