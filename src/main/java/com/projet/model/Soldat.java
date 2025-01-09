@@ -1,8 +1,8 @@
 package com.projet.model;
 
 public class Soldat {
-    private int x;
-    private int y;
+    /*private int x;
+    private int y;*/
     private int points_defence;
     private JoueurDto proprietaire;
     private final int PVMax;
@@ -47,7 +47,7 @@ public class Soldat {
         }
     }
 
-    public int getX() {
+    /*public int getX() {
         return x;
     }
 
@@ -61,6 +61,6 @@ public class Soldat {
 
     public void setY(int y) {
         this.y = y;
-    }
+    }*/
 
 }

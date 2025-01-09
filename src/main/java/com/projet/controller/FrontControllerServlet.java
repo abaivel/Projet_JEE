@@ -20,7 +20,8 @@ public class FrontControllerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         JoueurDto joueurConnecte = (JoueurDto) session.getAttribute("joueurConnecte");
-        (new JoueurService()).addJoueurToPartieActiveIfNotInPartie(joueurConnecte.getLogin());
+        JoueurService joueurService = new JoueurService();
+        joueurService.addJoueurToPartieActiveIfNotInPartie(joueurConnecte.getLogin());
         JoueurDto joueurTour = CarteService.getJoueurTour();
         Tuile[][] grille = CarteService.getCarte();
         List<JoueurDto> joueurs = CarteService.getJoueurs();

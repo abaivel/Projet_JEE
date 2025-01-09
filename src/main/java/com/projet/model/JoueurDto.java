@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JoueurDto {
-    private String login;
-    //private int score;
+    private final String login;
     private int nbCombatGagne;
     private int nbCombatPerdu;
     private int points_production;
@@ -16,7 +15,6 @@ public class JoueurDto {
 
     public JoueurDto(String login) {
         this.login = login;
-        //this.score = 0;
         nbCombatGagne = 0;
         nbCombatPerdu = 0;
         this.points_production = 0;
@@ -27,10 +25,6 @@ public class JoueurDto {
     public int getScore() {
         return nbCombatGagne * 5 - nbCombatPerdu*6 + villes.size()*10;
     }
-
-    /*public void setScore(int score) {
-        this.score = score;
-    }*/
 
     public int getPoints_production() {
         return points_production;

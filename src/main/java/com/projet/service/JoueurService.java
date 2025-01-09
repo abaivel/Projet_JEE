@@ -18,13 +18,13 @@ public class JoueurService {
         Joueur joueurconnecte = null;
         JoueurDto joueurdto = null;
         joueurconnecte =  joueurDAO.getJoueurByLogin(login);
-        if (joueurconnecte == null) {
+        if (joueurconnecte == null) { //Si aucun joueur n'existe avec ce login, on crée un nouveau joueur
             joueurconnecte = joueurDAO.createJoueur(login, password);
             result = true;
-        }else{
+        }else{ // sinon, on vérifie le mot de passe
             result = joueurconnecte.getMdp().equals(password);
         }
-        if (result){
+        if (result){ // Si le compte est valide
             joueurdto = partieService.addJoueurToPartieActiveIfNotInPartie(joueurconnecte);
         }
         return joueurdto;

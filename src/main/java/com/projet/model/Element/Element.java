@@ -12,7 +12,7 @@ public class Element {
     public Element() {
     }
 
-    public int getX() {
+    /*public int getX() {
         return x;
     }
 
@@ -27,5 +27,6 @@ public class Element {
     public void setY(int y) {
         this.y = y;
     }
+     */
 
 }

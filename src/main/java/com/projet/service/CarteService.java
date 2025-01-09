@@ -49,6 +49,7 @@ public class CarteService {
         Soldat s = tuile.getSoldat();
         if (s.CanPlay() && newX>=0 && newY>=0 && newX<10 && newY<10 && c.IsTuileOccupable(newX, newY, login)) {
             Tuile t = c.getTuile(oldX, oldY);
+            // On vérifie si la case cible contient un soldat ou une ville ennemi
             Tuile r = c.IsThereSoldatEnnemi(newX,newY, login);
             if (r!=null){
                 return r;
@@ -57,12 +58,11 @@ public class CarteService {
             if (v!=null){
                 return v;
             }
-            t.setX(newX);
-            t.setY(newY);
-            t.getSoldat().setX(newX);
-            t.getSoldat().setY(newY);
+            // On attribue le soldat à la tuile cible
             c.setTuileSoldat(newX, newY, t.getSoldat());
+            // On retire le soldat de la tuile d'origine
             c.setTuileSoldat(oldX, oldY, null);
+            // On marque le soldat comme ayant joué lors de ce tour
             s.setCanPlay(false);
         }
         return null;
@@ -86,24 +86,30 @@ public class CarteService {
 
     public static Tuile endCombat(Tuile tuileAttaque, Tuile tuileSoldat, int pointsAttaque, int pointsSoldat, JoueurDto joueur){
         tuileSoldat.getSoldat().setPoints_defence(pointsSoldat);
-        if (tuileSoldat.getSoldat().getPoints_defence() <=0){
+        if (tuileSoldat.getSoldat().getPoints_defence() <=0){ // Si notre soldat a perdu
             tuileSoldat.setSoldat(null);
             joueur.setNbCombatPerdu(joueur.getNbCombatPerdu()+1);
         }
-        if (tuileAttaque.getSoldat() != null){
+        if (tuileAttaque.getElement()!=null && tuileAttaque.getSoldat() != null){ // Si on s'est battu contre un soldat ennemi
             tuileAttaque.getSoldat().setPoints_defence(pointsAttaque);
-            if (tuileAttaque.getSoldat().getPoints_defence() <=0) {
+            if (tuileAttaque.getSoldat().getPoints_defence() <=0) { // Si le soldat ennemi a perdu
+                if (tuileAttaque.getSoldat().getProprietaire() != null) {
+                    tuileAttaque.getSoldat().getProprietaire().removeSoldat(tuileAttaque.getSoldat());
+                }
                 tuileAttaque.setSoldat(null);
                 joueur.setNbCombatGagne(joueur.getNbCombatGagne()+1);
-                return moveTuile(tuileSoldat.getX(), tuileSoldat.getY(), tuileAttaque.getX(), tuileAttaque.getY(), joueur.getLogin());
+                return moveTuile(tuileSoldat.getX(), tuileSoldat.getY(), tuileAttaque.getX(), tuileAttaque.getY(), joueur.getLogin()); // On bouge notre soldat sur la case du soldat ennemi
             }
         }
-        else if (tuileAttaque.getElement()!=null && tuileAttaque.getElement() instanceof Ville) {
+        else if (tuileAttaque.getElement()!=null && tuileAttaque.getElement() instanceof Ville) { //Si on s'est battu contre une ville ennemi
             ((Ville) tuileAttaque.getElement()).setPoints_defense(pointsAttaque);
-            if (((Ville) tuileAttaque.getElement()).getPoints_defense()<=0){
+            if (((Ville) tuileAttaque.getElement()).getPoints_defense()<=0){ // Si la ville a perdu
+                if (((Ville) tuileAttaque.getElement()).getProprietaire() != null){
+                    ((Ville) tuileAttaque.getElement()).getProprietaire().removeVille((Ville) tuileAttaque.getElement());
+                }
                 ((Ville) tuileAttaque.getElement()).setProprietaire(joueur);
                 joueur.setNbCombatGagne(joueur.getNbCombatGagne()+1);
-                return moveTuile(tuileSoldat.getX(), tuileSoldat.getY(), tuileAttaque.getX(), tuileAttaque.getY(), joueur.getLogin());
+                return moveTuile(tuileSoldat.getX(), tuileSoldat.getY(), tuileAttaque.getX(), tuileAttaque.getY(), joueur.getLogin()); //On bouge notre soldat sur la case de la ville
             }
         }
         return null;
