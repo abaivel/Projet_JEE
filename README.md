@@ -16,6 +16,11 @@ Ce projet consiste à réaliser un jeu 4X, c'est-à-dire dans lequel les actions
  - Base de données : MySQL
  - Maven : Outil de gestion de build
 
+## Technologies utilisées :
+ - Langages : Java, HTML, CSS, Javascript
+ - Framework : Jakarta EE
+ - Base de données : MySQL
+
 ## Installation :
 1. Cloner le projet:
 git clone https://github.com/abaivel/Projet_JEE.git
@@ -42,7 +47,4 @@ Remplacer "root" par le nom d'utilisateur à utiliser pour se connecter à votre
 ```
 Remplacer "cytech0001" par le mot de passe à utiliser pour se connecter à votre base de données
 
-## Technologies utilisées :
- - Langages : Java, HTML, CSS, Javascript
- - Framework : Jakarta EE
- - Base de données : MySQL
+## Fonctionnement
