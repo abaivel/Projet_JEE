@@ -66,6 +66,7 @@ public class PartieDto {
             }
             joueurTour = joueurs.get(indexTour);
             for (Ville ville : joueurTour.getVilles()) {
+                // On rajoute les points de production produits par les villes du joueurTour
                 joueurTour.setPoints_production(joueurTour.getPoints_production()+ville.getPoints_production());
             }
             return joueurTour;

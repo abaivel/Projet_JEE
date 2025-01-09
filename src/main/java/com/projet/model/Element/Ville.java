@@ -20,7 +20,9 @@ public class Ville extends Element {
 
     public void setProprietaire(JoueurDto proprietaire) {
         this.proprietaire = proprietaire;
-        proprietaire.addVille(this);
+        if (proprietaire!=null) {
+            proprietaire.addVille(this);
+        }
     }
 
     public int getPoints_defense() {

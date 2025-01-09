@@ -38,6 +38,7 @@ public class Carte {
 
     public void setGrilleAleatoire(){
         emptyGrille();
+        // On ajoute 10 Forets à la grille
         for (int i = 0; i<10;i++){
             int xRandom = 0;
             int yRandom = 0;
@@ -47,6 +48,7 @@ public class Carte {
             }while (!IsTuileEmpty(xRandom, yRandom));
             grille[xRandom][yRandom].setElement(new Foret(xRandom, yRandom, (int) (Math.random() * 10)));
         }
+        // On ajoute 5 montagnes à la grille
         for (int i = 0; i<5;i++){
             int xRandom = 0;
             int yRandom = 0;
@@ -56,6 +58,7 @@ public class Carte {
             }while (!IsTuileEmpty(xRandom, yRandom));
             grille[xRandom][yRandom].setElement(new Montagne(xRandom, yRandom));
         }
+        // On ajoute 5 villes à la grille
         for (int i = 0; i<5;i++){
             int xRandom = 0;
             int yRandom = 0;
@@ -74,23 +77,7 @@ public class Carte {
         return grille[x][y].getSoldat()==null && !(grille[x][y].getElement() instanceof Montagne);
     }
 
-    public boolean IsTuileOccupable2(int x, int y, String login){
-        Tuile t = grille[x][y];
-        if (t.getSoldat() != null){
-            return false;
-        }else if (t.getElement()==null){
-            return true;
-        }else if (t.getElement() instanceof Foret){
-            return true;
-        }else if (t.getElement() instanceof Ville){
-            if (((Ville) t.getElement()).getProprietaire()==null){
-                return false;
-            }else if (((Ville) t.getElement()).getProprietaire().getLogin().equals(login)){
-                return true;
-            }
-        }
-        return false;
-    }
+
     public boolean IsTuileOccupable(int x, int y, String login){
         Tuile t = grille[x][y];
         if (t.getSoldat() != null) {
@@ -152,8 +139,6 @@ public class Carte {
 
                 if (NoSoldat(x, y)) {
                     grille[x][y].setSoldat(soldat);
-                    soldat.setX(x);
-                    soldat.setY(y);
                     return true; // Soldat placé avec succès
                 }
             }
