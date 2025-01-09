@@ -7,7 +7,7 @@
     <title>Combat</title>
 </head>
 <body>
-<% JoueurDto joueurConnecte = (JoueurDto) request.getAttribute("joueurConnecte");
+<%
     Tuile tuileAttaque = (Tuile) request.getAttribute("tuileAttaque");
     Tuile tuileSoldat = (Tuile) request.getAttribute("tuileSoldat");
 %>
@@ -18,7 +18,7 @@
     <%}else if (tuileAttaque.getElement()!=null && tuileAttaque.getElement() instanceof Ville){%>
     <img src="icons/Large/city.png">
     <%}%>
-    <p>Points de défense : <span id="points_ville"><%=(tuileAttaque.getSoldat()!=null ? tuileAttaque.getSoldat().getPoints_defence() : (tuileAttaque.getElement()!=null && tuileAttaque.getElement() instanceof Ville ? ((Ville)tuileAttaque.getElement()).getPoints_defense() : 0 ) )%></span></p>
+    <p>Points de défense : <span id="points_entite_attaque"><%=(tuileAttaque.getSoldat()!=null ? tuileAttaque.getSoldat().getPoints_defence() : (tuileAttaque.getElement()!=null && tuileAttaque.getElement() instanceof Ville ? ((Ville)tuileAttaque.getElement()).getPoints_defense() : 0 ) )%></span></p>
 </div>
 <div>
 <button onclick="attaque()">Attaquer</button>
@@ -31,21 +31,19 @@
 
 <script>
     var soldatPoints = <%=tuileSoldat.getSoldat().getPoints_defence()%>;
-    var attaquePoints = <%=(tuileAttaque.getSoldat()!=null ? tuileAttaque.getSoldat().getPoints_defence() : (tuileAttaque.getElement()!=null && tuileAttaque.getElement() instanceof Ville ? ((Ville)tuileAttaque.getElement()).getPoints_defense() : 0 ) )%>;
-    var uniteAttaque = true; //true si le soldat attaque la ville, false si la ville attaque le soldat
+    var entiteAttaquePoints = <%=(tuileAttaque.getSoldat()!=null ? tuileAttaque.getSoldat().getPoints_defence() : (tuileAttaque.getElement()!=null && tuileAttaque.getElement() instanceof Ville ? ((Ville)tuileAttaque.getElement()).getPoints_defense() : 0 ) )%>;
+    var uniteAttaque = true; //true si notre soldat attaque la ville/le soldat, false si la ville/le soldat attaque notre soldat
     function attaque(){
         var pointsAttaque =  Math.floor(Math.random() * 6) + 1
         document.getElementById("points_attaque").innerHTML=pointsAttaque;
-        if (uniteAttaque){
-            attaquePoints -= pointsAttaque;
-            document.getElementById("points_ville").innerHTML=attaquePoints;
-        }else{
+        if (uniteAttaque){ //La ville/le soldat ennemi se fait attaqué
+            entiteAttaquePoints -= pointsAttaque;
+            document.getElementById("points_entite_attaque").innerHTML=entiteAttaquePoints;
+        }else{ // Notre soldat se fait attaqué
             soldatPoints -= pointsAttaque;
             document.getElementById("points_soldat").innerHTML=soldatPoints;
         }
-        console.log(attaquePoints)
-        console.log(soldatPoints)
-        if (attaquePoints<=0 || soldatPoints<=0){
+        if (entiteAttaquePoints<=0 || soldatPoints<=0){
             finCombat()
         }
         uniteAttaque = !uniteAttaque;
@@ -53,7 +51,7 @@
 
     function finCombat(){
         const data = new URLSearchParams({
-            tuileAttaquePoints : attaquePoints,
+            tuileAttaquePoints : entiteAttaquePoints,
             soldatPoints : soldatPoints
         });
         const apiUrl = '${pageContext.request.contextPath}/combat';
