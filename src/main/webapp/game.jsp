@@ -133,7 +133,7 @@
     <% for (int i=0;i<10;i++){%>
         <%for (int j=0;j<10;j++){
         if (grille[i][j].getSoldat() != null){%>
-            grille[<%=i%>][<%=j%>] = <%=grille[i][j].getSoldat().getPoints_defence()%>
+            grille[<%=i%>][<%=j%>] = <%=grille[i][j].getSoldat().getPoints_defense()%>
         <%}}
     }%>
     function clicSoldat(image, x, y){

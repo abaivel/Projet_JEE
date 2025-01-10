@@ -18,7 +18,7 @@
     <%}else if (tuileAttaque.getElement()!=null && tuileAttaque.getElement() instanceof Ville){%>
     <img src="icons/Large/city.png">
     <%}%>
-    <p>Points de défense : <span id="points_entite_attaque"><%=(tuileAttaque.getSoldat()!=null ? tuileAttaque.getSoldat().getPoints_defence() : (tuileAttaque.getElement()!=null && tuileAttaque.getElement() instanceof Ville ? ((Ville)tuileAttaque.getElement()).getPoints_defense() : 0 ) )%></span></p>
+    <p>Points de défense : <span id="points_entite_attaque"><%=(tuileAttaque.getSoldat()!=null ? tuileAttaque.getSoldat().getPoints_defense() : (tuileAttaque.getElement()!=null && tuileAttaque.getElement() instanceof Ville ? ((Ville)tuileAttaque.getElement()).getPoints_defense() : 0 ) )%></span></p>
 </div>
 <div>
 <button onclick="attaque()">Attaquer</button>
@@ -26,12 +26,12 @@
 </div>
 <div>
     <img src="icons/Large/soldier.png">
-    <p>Points de défense : <span id="points_soldat"><%=tuileSoldat.getSoldat().getPoints_defence()%></span></p>
+    <p>Points de défense : <span id="points_soldat"><%=tuileSoldat.getSoldat().getPoints_defense()%></span></p>
 </div>
 
 <script>
-    var soldatPoints = <%=tuileSoldat.getSoldat().getPoints_defence()%>;
-    var entiteAttaquePoints = <%=(tuileAttaque.getSoldat()!=null ? tuileAttaque.getSoldat().getPoints_defence() : (tuileAttaque.getElement()!=null && tuileAttaque.getElement() instanceof Ville ? ((Ville)tuileAttaque.getElement()).getPoints_defense() : 0 ) )%>;
+    var soldatPoints = <%=tuileSoldat.getSoldat().getPoints_defense()%>;
+    var entiteAttaquePoints = <%=(tuileAttaque.getSoldat()!=null ? tuileAttaque.getSoldat().getPoints_defense() : (tuileAttaque.getElement()!=null && tuileAttaque.getElement() instanceof Ville ? ((Ville)tuileAttaque.getElement()).getPoints_defense() : 0 ) )%>;
     var uniteAttaque = true; //true si notre soldat attaque la ville/le soldat, false si la ville/le soldat attaque notre soldat
     function attaque(){
         var pointsAttaque =  Math.floor(Math.random() * 6) + 1
