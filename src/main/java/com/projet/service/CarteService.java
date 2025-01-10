@@ -121,7 +121,7 @@ public class CarteService {
         Carte c = p.getCarte();
         Tuile tuile = c.getTuile(x, y);
         Soldat s = tuile.getSoldat();
-        if (s.CanPlay()) {
+        if (s.CanPlay() && !s.isFullLife()) {
             s.setPoints_defense(tuile.getSoldat().getPoints_defense() + 10);
             s.setCanPlay(false);
         }
