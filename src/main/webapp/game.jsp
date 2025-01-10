@@ -128,6 +128,7 @@
 <script>
     var img_selectionne_x = 0
     var img_selectionne_y = 0
+    // On crée un grille 10x10 rempli avec les points de defense des soldats présents
     var grille = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]]
     <% for (int i=0;i<10;i++){%>
         <%for (int j=0;j<10;j++){
@@ -188,7 +189,7 @@
             })
             .then(data => {
                 if (data.redirect) {
-                    window.location.href = data.redirect; // Redirection vers l'URL renvoyée
+                    window.location.href = data.redirect; // Redirection vers l'URL renvoyée - utilisé pour renvoyer vers la page de combat
                 }
             })
             .catch(err => {
