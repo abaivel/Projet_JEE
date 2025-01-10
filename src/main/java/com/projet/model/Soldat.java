@@ -46,6 +46,7 @@ public class Soldat {
             this.points_defence = this.PVMax;
         }
     }
+    public boolean isFullLife() {return (this.points_defence == this.PVMax);}
 
     /*public int getX() {
         return x;
