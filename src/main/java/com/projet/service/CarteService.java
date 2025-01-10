@@ -85,14 +85,14 @@ public class CarteService {
     }
 
     public static Tuile endCombat(Tuile tuileAttaque, Tuile tuileSoldat, int pointsAttaque, int pointsSoldat, JoueurDto joueur){
-        tuileSoldat.getSoldat().setPoints_defence(pointsSoldat);
-        if (tuileSoldat.getSoldat().getPoints_defence() <=0){ // Si notre soldat a perdu
+        tuileSoldat.getSoldat().setPoints_defense(pointsSoldat);
+        if (tuileSoldat.getSoldat().getPoints_defense() <=0){ // Si notre soldat a perdu
             tuileSoldat.setSoldat(null);
             joueur.setNbCombatPerdu(joueur.getNbCombatPerdu()+1);
         }
         if (tuileAttaque.getElement()!=null && tuileAttaque.getSoldat() != null){ // Si on s'est battu contre un soldat ennemi
-            tuileAttaque.getSoldat().setPoints_defence(pointsAttaque);
-            if (tuileAttaque.getSoldat().getPoints_defence() <=0) { // Si le soldat ennemi a perdu
+            tuileAttaque.getSoldat().setPoints_defense(pointsAttaque);
+            if (tuileAttaque.getSoldat().getPoints_defense() <=0) { // Si le soldat ennemi a perdu
                 if (tuileAttaque.getSoldat().getProprietaire() != null) {
                     tuileAttaque.getSoldat().getProprietaire().removeSoldat(tuileAttaque.getSoldat());
                 }
@@ -122,7 +122,7 @@ public class CarteService {
         Tuile tuile = c.getTuile(x, y);
         Soldat s = tuile.getSoldat();
         if (s.CanPlay() && !s.isFullLife()) {
-            s.setPoints_defence(tuile.getSoldat().getPoints_defence() + 10);
+            s.setPoints_defense(tuile.getSoldat().getPoints_defense() + 10);
             s.setCanPlay(false);
         }
         return p.getJoueurTour();
