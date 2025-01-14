@@ -19,14 +19,25 @@ public class PartieDto {
         if (joueurs.isEmpty()) {
             joueurTour = joueur;
         }
-        joueurs.add(joueur);
-        int xRandom = 0;
-        int yRandom = 0;
-        do {
-            xRandom = (int) (Math.random() * 10);
-            yRandom = (int) (Math.random() * 10);
-        }while (!carte.IsTuileEmpty(xRandom, yRandom));
-        carte.setTuileSoldat(xRandom,yRandom,new Soldat(xRandom,yRandom, 20, joueur));
+        if (!IsJoueurInPartie(joueur)) {
+            joueurs.add(joueur);
+            int xRandom = 0;
+            int yRandom = 0;
+            do {
+                xRandom = (int) (Math.random() * 10);
+                yRandom = (int) (Math.random() * 10);
+            } while (!carte.IsTuileEmpty(xRandom, yRandom));
+            carte.setTuileSoldat(xRandom, yRandom, new Soldat(xRandom, yRandom, 20, joueur));
+        }
+    }
+
+    public boolean IsJoueurInPartie(JoueurDto joueur){
+        for (JoueurDto joueurDto : joueurs) {
+            if (joueurDto.getLogin().equals(joueur.getLogin())){
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<JoueurDto> getJoueurs(){

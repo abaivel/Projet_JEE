@@ -79,11 +79,11 @@
                     <button disabled onclick="allerHaut('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-haut"><img src="icons/fleche_haut.png"></button>
                     <button disabled onclick="allerGauche('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-gauche"><img src="icons/fleche_gauche.png"></button>
                     <button disabled onclick="allerDroite('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-droite"><img src="icons/fleche_droite.png"></button>
-                    <button disabled onclick="allerBas('<%=joueurConnecte.getLogin()%>')" class="button-deplacement-disabled button-deplacement-bas"><img src="icons/fleche_bas.png"></button>
+                    <button disabled onclick="allerBas('<%=joueurConnecte.getLogin()%>')" class="button-deplacement button-deplacement-bas"><img src="icons/fleche_bas.png"></button>
                 </div>
                 <div class="div-others-buttons">
                     <button disabled class="other-button-disabled">Se soigner</button>
-                    <button disabled class="other-button-disabled">Fourrager</button>
+                    <button disabled class="other-button-disabled" >Fourrager</button>
                 </div>
             <%}%>
         </div>
@@ -113,6 +113,7 @@
         <%}%>
         <p>Score : <%=joueurConnecte.getScore()%></p>
         <p>Points de production : <%=joueurConnecte.getPoints_production()%></p>
+        <%if (joueurTour.getLogin().equals(joueurConnecte.getLogin())){%>
         <form>
             <%if (joueurConnecte.getPoints_production()>=15){%>
             <button class="other-button" onclick="recruter('<%=joueurConnecte.getLogin()%>')"> Recruter un soldat : 15 points de production </button>
@@ -123,6 +124,14 @@
         <form method="post" action="${pageContext.request.contextPath}/finPartie">
             <input class="other-button" type="submit" value="Finir la partie">
         </form>
+        <%}else{%>
+        <form>
+            <input class="other-button-disabled" disabled type="submit" value="Recruter un soldat : 15 points de production">
+        </form>
+        <form method="post" action="${pageContext.request.contextPath}/finPartie">
+            <input disabled class="other-button" type="submit" value="Finir la partie">
+        </form>
+        <%}%>
     </div>
 </div>
 <script>

@@ -4,12 +4,14 @@ import com.projet.model.JoueurDto;
 
 public class Ville extends Element {
     private int points_defense;
+    private int points_defense_max;
     private int points_production;
     private JoueurDto proprietaire;
 
     public Ville(int x, int y, int points_defense, int points_production) {
         super(x, y);
         this.points_defense = points_defense;
+        this.points_defense_max = points_defense;
         this.proprietaire = null;
         this.points_production = points_production;
     }
@@ -23,6 +25,7 @@ public class Ville extends Element {
         if (proprietaire!=null) {
             proprietaire.addVille(this);
         }
+        setPoints_defense(points_defense_max);
     }
 
     public int getPoints_defense() {
