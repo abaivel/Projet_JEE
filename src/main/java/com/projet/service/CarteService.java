@@ -90,7 +90,7 @@ public class CarteService {
             tuileSoldat.setSoldat(null);
             joueur.setNbCombatPerdu(joueur.getNbCombatPerdu()+1);
         }
-        if (tuileAttaque.getElement()!=null && tuileAttaque.getSoldat() != null){ // Si on s'est battu contre un soldat ennemi
+        if (tuileAttaque.getSoldat() != null){ // Si on s'est battu contre un soldat ennemi
             tuileAttaque.getSoldat().setPoints_defense(pointsAttaque);
             if (tuileAttaque.getSoldat().getPoints_defense() <=0) { // Si le soldat ennemi a perdu
                 if (tuileAttaque.getSoldat().getProprietaire() != null) {
