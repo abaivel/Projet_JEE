@@ -67,4 +67,8 @@ Les actions possibles pour un joueur sont :
 
 Lorsque vous finissez la partie, un tableau des scores des joueurs s'affiche.
 
+## Demo
+
+https://1drv.ms/v/s!AohqmbHDLtLEmrBxMa4_k9WwWgDO_Q?e=aD3RHE
+
 
